@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
 import {FaPlusCircle} from 'react-icons/fa';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
 import Customers from '../components/Customers';
 
 function CustomersPage() {
@@ -13,12 +16,11 @@ function CustomersPage() {
 
   const loadCustomers = async () => {
     try {
-      const response = await fetch('/customers');
-      if (!response.ok) throw new Error('Failed to fetch customer types');
-      const data = await response.json();
-      setCustomers(data);
+      const res = await axios.get('/customers');
+      setCustomers(res.data);
     } catch (error) {
       console.error('Failed to load customer types:', error);
+      toast.error('Failed to load customer types');
     }
   };
 
@@ -28,16 +30,8 @@ function CustomersPage() {
 
   const onDeleteCustomer = async (id) => {
     try {
-      const response = await fetch(`/customers/${id}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        setCustomers(
-          customers.filter((customer) => customer.customer_id !== id),
-        );
-      } else {
-        throw new Error(`Failed to delete customer type with ID: ${id}`);
-      }
+      await axios.delete(`/customers/${id}`);
+      setCustomers(customers.filter((customer) => customer.customer_id !== id));
     } catch (error) {
       console.error('Error deleting customer type:', error);
     }

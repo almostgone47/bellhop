@@ -19,7 +19,7 @@ function Booking({booking, onEdit, onDelete}) {
         <FaEdit onClick={() => onEdit(booking)} />
       </td>
       <td>
-        <FaRegTrashAlt onClick={() => onDelete(booking._id)} />
+        <FaRegTrashAlt onClick={() => onDelete(booking.booking_id)} />
       </td>
     </tr>
   );

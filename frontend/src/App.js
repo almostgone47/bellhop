@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {Toaster} from 'react-hot-toast';
 
 import './App.css';
 import Navbar from './components/Navbar';
@@ -25,6 +26,7 @@ function App() {
     <>
       <BrowserRouter>
         <header>
+          <Toaster position="top-center" />
           <div id="header-logo-container">
             <img src={logo} id="header-logo" alt="initials logo" />
             <h1>BellHop</h1>
@@ -41,15 +43,15 @@ function App() {
 
             <Route path="/rooms" element={<RoomsPage />} />
             <Route path="/updateRoom" element={<EditRoomPage />} />
-            <Route path="/addRoom" element={<AddRoomPage />} />
+            <Route path="/createRoom" element={<AddRoomPage />} />
 
             <Route path="/roomTypes" element={<RoomTypesPage />} />
             <Route path="/updateRoomType" element={<EditRoomTypePage />} />
-            <Route path="/addRoomType" element={<AddRoomTypePage />} />
+            <Route path="/createRoomType" element={<AddRoomTypePage />} />
 
             <Route path="/customers" element={<CustomersPage />} />
             <Route path="/updateCustomer" element={<EditCustomerPage />} />
-            <Route path="/addCustomer" element={<AddCustomerPage />} />
+            <Route path="/createCustomer" element={<AddCustomerPage />} />
           </Routes>
         </main>
 

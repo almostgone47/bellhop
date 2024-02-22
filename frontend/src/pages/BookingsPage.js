@@ -1,6 +1,8 @@
 import {React, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
 import Bookings from '../components/Bookings';
 import {FaPlusCircle} from 'react-icons/fa';
@@ -15,12 +17,12 @@ function BookingsPage() {
 
   const loadBookings = async () => {
     try {
-      const response = await fetch('/bookings');
-      if (!response.ok) throw new Error('Failed to fetch bookings');
-      const data = await response.json();
-      setBookings(data);
-    } catch (error) {
-      console.error('Failed to load bookings:', error);
+      const res = await axios.get('/bookings');
+      console.log('data::', res.data);
+      setBookings(res.data);
+    } catch ({error}) {
+      console.log('Failed to load bookings:', error);
+      toast.error('Failed to load bookings: ' + error);
     }
   };
 
@@ -30,16 +32,12 @@ function BookingsPage() {
 
   const onDeleteBooking = async (id) => {
     try {
-      const response = await fetch(`/bookings/${id}`, {
-        method: 'DELETE',
-      });
-      if (response.status === 204) {
-        setBookings(bookings.filter((booking) => booking.id !== id));
-      } else {
-        throw new Error(`Failed to delete booking with ID: ${id}`);
-      }
+      axios.delete(`/bookings/${id}`);
+      setBookings(bookings.filter((booking) => booking.booking_id !== id));
+      toast.success('Booking Deleted');
     } catch (error) {
-      console.error('Error deleting booking:', error);
+      console.log('Error deleting booking:', error);
+      toast.error('Error: Could not delete booking');
     }
   };
 
@@ -52,11 +50,15 @@ function BookingsPage() {
           Add Booking
         </Link>
       </p>
-      <Bookings
-        bookings={bookings}
-        onEdit={onEditBooking}
-        onDelete={onDeleteBooking}
-      />
+      {bookings.length > 0 ? (
+        <Bookings
+          bookings={bookings}
+          onEdit={onEditBooking}
+          onDelete={onDeleteBooking}
+        />
+      ) : (
+        <p>No bookings available.</p>
+      )}
     </section>
   );
 }

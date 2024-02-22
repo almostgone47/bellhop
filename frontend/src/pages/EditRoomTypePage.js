@@ -1,43 +1,48 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const AddRoomTypePageTable = () => {
+  const navigate = useNavigate();
+  const {state} = useLocation();
   const [roomType, setRoomType] = useState({
     name: '',
     price: '',
     capacity: '',
   });
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (!state?.room) {
+      toast.error('Room data not found.');
+      navigate('/rooms');
+    } else {
+      setRoomType({
+        name: state.roomType.name,
+        price: state.roomType.price,
+        description: state.roomType.description,
+      });
+    }
+  }, [state, navigate]);
 
   const changeHandler = (e) => {
     const {name, value} = e.target;
     setRoomType({...roomType, [name]: value});
   };
 
-  const addRoomType = async () => {
+  const editRoomType = async () => {
     try {
-      const response = await fetch('/roomTypes', {
-        method: 'POST',
-        body: JSON.stringify(roomType),
-        headers: {'Content-Type': 'application/json'},
-      });
-
-      if (response.ok) {
-        alert('Room Type successfully added!');
-        navigate('/roomTypes');
-      } else {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to add room type');
-      }
+      await axios.put('/roomTypes', {roomType});
+      toast.success('Room Type successfully updated!');
+      navigate('/roomTypes');
     } catch (error) {
-      alert(`Failed to add room type. ${error.message}`);
+      toast.error(`Failed to add room type. ${error.message}`);
     }
   };
 
   return (
     <section className="content-area">
-      <h2>Add a Room Type</h2>
+      <h2>Update a Room Type</h2>
       <div>
         <input
           type="text"
@@ -55,12 +60,12 @@ const AddRoomTypePageTable = () => {
         />
         <input
           type="number"
-          placeholder="Capacity"
-          name="capacity"
-          value={roomType.capacity}
+          placeholder="Description"
+          name="description"
+          value={roomType.description}
           onChange={changeHandler}
         />
-        <button onClick={addRoomType}>Submit Room Type</button>
+        <button onClick={editRoomType}>Save Changes</button>
       </div>
     </section>
   );

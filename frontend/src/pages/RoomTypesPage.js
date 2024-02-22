@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
 import {FaPlusCircle} from 'react-icons/fa';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
 import RoomTypes from '../components/RoomTypes';
 
 function RoomTypesPage() {
@@ -13,12 +16,11 @@ function RoomTypesPage() {
 
   const loadRoomTypes = async () => {
     try {
-      const response = await fetch('/roomTypes');
-      if (!response.ok) throw new Error('Failed to fetch room types');
-      const data = await response.json();
-      setRoomTypes(data);
+      const res = await axios.get('/roomTypes');
+      setRoomTypes(res.data);
     } catch (error) {
       console.error('Failed to load room types:', error);
+      toast.error('Failed to load room types');
     }
   };
 
@@ -28,15 +30,13 @@ function RoomTypesPage() {
 
   const onDeleteRoomType = async (id) => {
     try {
-      const response = await fetch(`/roomTypes/${id}`, {
-        method: 'DELETE',
-      });
+      const response = await axios.delete(`/roomTypes/${id}`);
       if (response.ok) {
         setRoomTypes(
           roomTypes.filter((roomType) => roomType.room_type_id !== id),
-        ); // Ensure you're using the correct identifier key
+        );
       } else {
-        throw new Error(`Failed to delete room type with ID: ${id}`);
+        toast.error(`Failed to delete room type with ID: ${id}`);
       }
     } catch (error) {
       console.error('Error deleting room type:', error);

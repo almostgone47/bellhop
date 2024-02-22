@@ -1,107 +1,119 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import {FaRegTrashAlt} from 'react-icons/fa';
 
-const EditBookingPageTable = () => {
-  const location = useLocation();
-  const bookingToEdit = location.state.booking; 
-  const [booking, setBooking] = useState(bookingToEdit);
+const EditBookingPage = () => {
+  const navigate = useNavigate();
+  const {state} = useLocation();
+  const [booking, setBooking] = useState({
+    customerId: '',
+    roomBookings: [],
+  });
 
   useEffect(() => {
-    setBooking(bookingToEdit);
-  }, [bookingToEdit]);
+    if (!state?.booking) {
+      toast.error('Booking data not found.');
+      navigate('/');
+    } else {
+      async function getRoomBookings() {
+        const res = await axios.get(
+          `/roomBookings/${state.booking.booking_id}`,
+        );
+        setBooking({
+          customerId: state.booking.customer_id,
+          roomBookings: [...res.data],
+        });
+      }
+      getRoomBookings();
+    }
+  }, [state, navigate]);
 
-  const navigate = useNavigate();
+  const addRoomBooking = () => {
+    setBooking({
+      ...booking,
+      roomBookings: [
+        ...booking.roomBookings,
+        {roomTypeId: '', startDate: '', endDate: ''},
+      ],
+    });
+  };
+
+  const removeRoomBooking = (index) => {
+    const updatedRoomBookings = booking.roomBookings.filter(
+      (_, i) => i !== index,
+    );
+    setBooking({...booking, roomBookings: updatedRoomBookings});
+  };
+
+  const changeHandler = (e, index) => {
+    const {name, value} = e.target;
+    if (name.startsWith('roomBookings')) {
+      const updatedRoomBookings = booking.roomBookings.map((item, i) =>
+        i === index ? {...item, [name.split('.')[1]]: value} : item,
+      );
+      setBooking({...booking, roomBookings: updatedRoomBookings});
+    } else {
+      setBooking({...booking, [name]: value});
+    }
+  };
 
   const editBooking = async () => {
-    const response = await fetch(`/bookings/${booking.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        status: booking.status,
-        roomBooking: booking.roomBooking,
-        // Include other booking properties here
-      }),
-      headers: {'Content-Type': 'application/json'},
-    });
-
-    if (response.ok) {
-      alert('Booking and room booking updated successfully!');
-      navigate('/bookings');
-    } else {
-      const errMessage = await response.json();
-      alert(`Failed to update booking. Error: ${errMessage.error}`);
+    try {
+      await axios.put(`/bookings/${state?.booking.booking_id}`, booking);
+      toast.success('Booking updated successfully!');
+      navigate('/');
+    } catch (error) {
+      toast.error(`Failed to update booking: ${error.message}`);
     }
   };
-
-  const changeHandler = (e) => {
-    if (e.target.name.startsWith("roomBooking.")) {
-      const name = e.target.name.split(".")[1];
-      setBooking({
-        ...booking,
-        roomBooking: {
-          ...booking.roomBooking,
-          [name]: e.target.value,
-        },
-      });
-    } else {
-      setBooking({
-        ...booking,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
-
+  console.log('booking.roomBookings?.map(:  ', booking);
   return (
-    <article className="content-area">
+    <section className="content-area">
       <h2>Edit Booking</h2>
-      {/* Modify the form to match booking structure */}
       <div>
-        <label>Status:</label>
         <input
           type="text"
-          name="status"
-          value={booking.status}
+          placeholder="Customer ID"
+          name="customerId"
+          value={booking.customerId}
           onChange={changeHandler}
         />
-        {/* Add inputs for room booking properties */}
-        <label>Room Type ID:</label>
-        <input
-          type="number"
-          name="roomBooking.roomTypeId"
-          value={booking.roomBooking.roomTypeId}
-          onChange={changeHandler}
-        />
-        <label>Start Date:</label>
-        <input
-          type="date"
-          name="roomBooking.startDate"
-          value={booking.roomBooking.startDate}
-          onChange={changeHandler}
-        />
-        <label>End Date:</label>
-        <input
-          type="date"
-          name="roomBooking.endDate"
-          value={booking.roomBooking.endDate}
-          onChange={changeHandler}
-        />
-        <label>Nights:</label>
-        <input
-          type="number"
-          name="roomBooking.nights"
-          value={booking.roomBooking.nights}
-          onChange={changeHandler}
-        />
-        <label>Booked Price:</label>
-        <input
-          type="number"
-          name="roomBooking.bookedPrice"
-          value={booking.roomBooking.bookedPrice}
-          onChange={changeHandler}
-        />
-        <button onClick={editBooking}>Save Changes</button>
+
+        {booking?.roomBookings?.map((roomBooking, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              placeholder="Room Type ID"
+              name={`roomBookings.roomTypeId`}
+              value={roomBooking.roomTypeId}
+              onChange={(e) => changeHandler(e, index)}
+            />
+            <input
+              type="date"
+              placeholder="Start Date"
+              name={`roomBookings.startDate`}
+              value={roomBooking.startDate.slice(0, 10)}
+              onChange={(e) => changeHandler(e, index)}
+            />
+            <input
+              type="date"
+              placeholder="End Date"
+              name={`roomBookings.endDate`}
+              value={roomBooking.endDate.slice(0, 10)}
+              onChange={(e) => changeHandler(e, index)}
+            />
+            <FaRegTrashAlt onClick={() => removeRoomBooking(index)} />
+          </div>
+        ))}
       </div>
-    </article>
+      <div id="addBookingBtns">
+        <button onClick={addRoomBooking}>Add Another Room</button>
+        <button onClick={editBooking}>Submit Changes</button>
+      </div>
+    </section>
   );
 };
 
-export default EditBookingPageTable;
+export default EditBookingPage;

@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import {FaRegTrashAlt} from 'react-icons/fa';
 
-const AddBookingPageTable = () => {
-  const [booking, setBooking] = useState({
-    customer: {id: '', name: ''},
-    dateCreated: new Date().toISOString().slice(0, 10),
-    roomBookings: [
-      {roomTypeId: '', startDate: '', endDate: '', nights: '', bookedPrice: ''},
-    ],
-  });
-
+const AddBookingPage = () => {
   const navigate = useNavigate();
+  const [booking, setBooking] = useState({
+    customerId: '',
+    roomBookings: [{roomTypeId: '', startDate: '', endDate: ''}],
+  });
 
   const addRoomBooking = () => {
     setBooking({
@@ -21,10 +20,17 @@ const AddBookingPageTable = () => {
           roomTypeId: '',
           startDate: '',
           endDate: '',
-          nights: '',
-          bookedPrice: '',
         },
       ],
+    });
+  };
+
+  const removeRoomBooking = (index) => {
+    const newRoomBookings = [...booking.roomBookings];
+    newRoomBookings.splice(index, 1);
+    setBooking({
+      ...booking,
+      roomBookings: newRoomBookings,
     });
   };
 
@@ -42,17 +48,17 @@ const AddBookingPageTable = () => {
   };
 
   const addBooking = async () => {
-    const response = await fetch('/bookings', {
-      method: 'POST',
-      body: JSON.stringify(booking),
-      headers: {'Content-Type': 'application/json'},
-    });
-
-    if (response.ok) {
-      alert('Booking successfully added!');
-      navigate('/bookings');
+    const res = await axios.post('/bookings', {booking});
+    console.log('res: ', res);
+    if (res.status === 200) {
+      setBooking({
+        customerId: '',
+        roomBookings: [{roomTypeId: '', startDate: '', endDate: ''}],
+      });
+      toast.success('Booking successfully added!');
+      navigate('/');
     } else {
-      alert(`Failed to add booking. Status: ${response.status}`);
+      toast.error('Failed to add booking.');
     }
   };
 
@@ -63,15 +69,8 @@ const AddBookingPageTable = () => {
         <input
           type="text"
           placeholder="Customer ID"
-          name="customer.id"
-          value={booking.customer.id}
-          onChange={changeHandler}
-        />
-        <input
-          type="text"
-          placeholder="Customer Name"
-          name="customer.name"
-          value={booking.customer.name}
+          name="customerId"
+          value={booking.customerId}
           onChange={changeHandler}
         />
       </div>
@@ -98,9 +97,13 @@ const AddBookingPageTable = () => {
             value={roomBooking.endDate}
             onChange={(e) => changeHandler(e, index)}
           />
+          <FaRegTrashAlt
+            onClick={() => removeRoomBooking(index)}
+            style={{cursor: 'pointer', marginLeft: '10px'}}
+          />
         </div>
       ))}
-      <div>
+      <div id="addBookingBtns">
         <button onClick={addRoomBooking}>Add Another Room</button>
         <button onClick={addBooking}>Submit Booking</button>
       </div>
@@ -108,4 +111,4 @@ const AddBookingPageTable = () => {
   );
 };
 
-export default AddBookingPageTable;
+export default AddBookingPage;

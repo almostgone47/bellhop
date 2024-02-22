@@ -1,35 +1,26 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const AddRoomTypePageTable = () => {
+  const navigate = useNavigate();
   const [roomType, setRoomType] = useState({
     name: '',
     price: '',
-    capacity: ''
+    capacity: '',
   });
 
-  const navigate = useNavigate();
-
   const changeHandler = (e) => {
-    const { name, value } = e.target;
-    setRoomType({ ...roomType, [name]: value });
+    const {name, value} = e.target;
+    setRoomType({...roomType, [name]: value});
   };
 
   const addRoomType = async () => {
     try {
-      const response = await fetch('/roomTypes', {
-        method: 'POST',
-        body: JSON.stringify(roomType),
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (response.ok) {
-        alert('Room Type successfully added!');
-        navigate('/roomTypes');
-      } else {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to add room type');
-      }
+      await axios.post('/roomTypes', {roomType});
+      toast.success('Room Type successfully added!');
+      navigate('/roomTypes');
     } catch (error) {
       alert(`Failed to add room type. ${error.message}`);
     }
@@ -55,9 +46,9 @@ const AddRoomTypePageTable = () => {
         />
         <input
           type="number"
-          placeholder="Capacity"
-          name="capacity"
-          value={roomType.capacity}
+          placeholder="Description"
+          name="description"
+          value={roomType.description}
           onChange={changeHandler}
         />
         <button onClick={addRoomType}>Submit Room Type</button>
