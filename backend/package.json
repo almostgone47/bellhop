@@ -1,0 +1,21 @@
+{
+  "name": "bellhop-backend",
+  "version": "0.1",
+  "description": "This is the backend for BellHop Hotel Management App.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.mjs",
+    "start": "node index.mjs",
+    "seed": "node seed.mjs"
+  },
+  "author": "Jeremiah Barro",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^3.9.1",
+    "nodemon": "^2.0.20"
+  }
+}
