@@ -32,9 +32,9 @@ CREATE TABLE rooms (
 
 CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id INT,
+    customer_id INT NOT NULL,
 	total_paid FLOAT DEFAULT '0.00',
-    date_created DATE NOT NULL,
+    date_created DATE DEFAULT (CURDATE()),
     status ENUM('arriving', 'checkedin unpaid', 'checkedin paid', 'checked out') DEFAULT 'arriving',
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
@@ -42,7 +42,7 @@ CREATE TABLE bookings (
 CREATE TABLE room_bookings (
     room_booking_id INT AUTO_INCREMENT PRIMARY KEY,
     room_type_id INT NOT NULL,
-	booking_id INT,
+	booking_id INT NOT NULL,
     room_id INT NULL,-- <-- NULL because this will be updated to a specific room ID on arrival
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,

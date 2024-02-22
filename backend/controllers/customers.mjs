@@ -3,25 +3,23 @@ import * as customer from '../models/customer.mjs';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-  try {
-    await customer.createCustomer(req.body);
-    res.status(201).send({message: 'Customer created successfully'});
-  } catch (error) {
-    res
-      .status(500)
-      .send({message: 'Error creating customer', error: error.message});
-  }
-});
-
 router.get('/', async (req, res) => {
   try {
     const customers = await customer.getAllCustomers();
     res.json(customers);
   } catch (error) {
-    res
-      .status(500)
-      .send({message: 'Error retrieving customers', error: error.message});
+    res.status(500).json({error: 'Failed to retrieve customers.'});
+  }
+});
+
+router.post('/', async (req, res) => {
+  try {
+    await customer.createCustomer(req.body);
+    res.status(201).send({message: 'Customer created successfully'});
+  } catch (error) {
+    res.status(400).json({
+      error: 'Could not create customer.',
+    });
   }
 });
 

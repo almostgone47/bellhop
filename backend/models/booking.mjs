@@ -1,34 +1,6 @@
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const createBooking = async (booking) => {
-  await db.query(
-    `INSERT INTO bookings (customer_id, date_created) 
-     VALUES (?, ?)`,
-    [booking.customer.id, booking.dateCreated],
-  );
-
-  const [bookingResult] = await db.query(
-    `SELECT LAST_INSERT_ID() as bookingId`,
-  );
-  const bookingId = bookingResult[0].bookingId;
-
-  await db.query(
-    `INSERT INTO room_bookings (room_type_id, booking_id, start_date, end_date, nights, booked_price) 
-     VALUES (?, ?, ?, ?, DATEDIFF(?, ?), (SELECT price FROM room_types 
-     WHERE room_type_id = ?))`,
-    [
-      booking.roomType.id,
-      bookingId,
-      booking.startDate,
-      booking.endDate,
-      booking.endDate,
-      booking.startDate,
-      booking.roomType.id,
-    ],
-  );
-};
-
 const getBookings = async () => {
   const [rows] = await db.query(
     `SELECT bookings.*, customers.*, room_bookings.*
@@ -37,6 +9,49 @@ const getBookings = async () => {
      LEFT JOIN room_bookings ON bookings.booking_id = room_bookings.booking_id`,
   );
   return rows;
+};
+
+const getBookingById = async (id) => {
+  const [rows] = await db.query(
+    `SELECT bookings.*, room_bookings.*
+     FROM bookings
+     JOIN customers ON bookings.customer_id = customers.customer_id
+     LEFT JOIN room_bookings ON bookings.booking_id = room_bookings.booking_id
+     WHERE bookings.booking_id = ?`,
+    [id],
+  );
+  return rows[0];
+};
+
+const createBooking = async ({booking}) => {
+  const [savedBooking] = await db.query(
+    `INSERT INTO bookings (customer_id) 
+    VALUES (?)`,
+    [booking.customerId],
+  );
+
+  console.log('bookingId: ', savedBooking);
+  const bookingId = savedBooking.insertId;
+
+  for (const roomBooking of booking.roomBookings) {
+    const [[{price}]] = await db.query(
+      `SELECT price FROM room_types 
+       WHERE room_type_id = ?`,
+      [roomBooking.roomTypeId],
+    );
+
+    await db.query(
+      `INSERT INTO room_bookings (booking_id, room_type_id, start_date, end_date, nights, booked_price) 
+       VALUES (?, ?, ?, ?, DATEDIFF(end_date, start_date), ?)`,
+      [
+        bookingId.toString(),
+        roomBooking.roomTypeId,
+        roomBooking.startDate,
+        roomBooking.endDate,
+        price.toLocaleString(undefined, {minimumFractionDigits: 2}),
+      ],
+    );
+  }
 };
 
 const updateBooking = async (booking) => {
@@ -67,12 +82,14 @@ const deleteBookingById = async (id) => {
     WHERE booking_id = ?`,
     [id],
   );
+  console.log('deleted: ', result);
   return result.affectedRows;
 };
 
 export {
-  createBooking,
   getBookings,
+  getBookingById,
+  createBooking,
   updateBooking,
   getBookingByEmail,
   deleteBookingById,
