@@ -12,17 +12,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
-  try {
-    await customer.createCustomer(req.body);
-    res.status(201).send({message: 'Customer created successfully'});
-  } catch (error) {
-    res.status(400).json({
-      error: 'Could not create customer.',
-    });
-  }
-});
-
 router.get('/:id', async (req, res) => {
   try {
     const data = await customer.getCustomerById(req.params.id);
@@ -35,6 +24,17 @@ router.get('/:id', async (req, res) => {
     res
       .status(500)
       .send({message: 'Error retrieving customer', error: error.message});
+  }
+});
+
+router.post('/', async (req, res) => {
+  try {
+    await customer.createCustomer(req.body);
+    res.status(201).send({message: 'Customer created successfully'});
+  } catch (error) {
+    res.status(400).json({
+      error: 'Could not create customer.',
+    });
   }
 });
 
@@ -52,11 +52,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const result = await customer.deleteCustomer(req.params.id);
-    if (result.affectedRows > 0) {
-      res.send({message: 'Customer deleted successfully'});
-    } else {
-      res.status(404).send({message: 'Customer not found'});
-    }
+    res.status(200).send({message: 'Customer deleted successfully'});
   } catch (error) {
     res
       .status(500)

@@ -32,6 +32,7 @@ function RoomsPage() {
     try {
       await axios.delete(`/rooms/${id}`);
       setRooms(rooms.filter((room) => room.room_id !== id));
+      toast.success('Room Deleted');
     } catch (error) {
       console.error('Error deleting room type:', error);
       toast.error('Error deleting room type');

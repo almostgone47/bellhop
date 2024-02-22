@@ -3,15 +3,6 @@ import * as room from '../models/room.mjs';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-  try {
-    await room.createRoom(req.body);
-    res.status(201).json({message: 'Room created successfully'});
-  } catch (error) {
-    res.status(500).json({message: error.message});
-  }
-});
-
 router.get('/', async (req, res) => {
   try {
     const rooms = await room.getAllRooms();
@@ -33,6 +24,15 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({message: error.message});
   }
 });
+router.post('/', async (req, res) => {
+  try {
+    await room.createRoom(req.body);
+    res.status(201).json({message: 'Room created successfully'});
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
+
 
 router.put('/:id', async (req, res) => {
   try {

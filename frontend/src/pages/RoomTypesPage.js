@@ -30,8 +30,8 @@ function RoomTypesPage() {
 
   const onDeleteRoomType = async (id) => {
     try {
-      const response = await axios.delete(`/roomTypes/${id}`);
-      if (response.ok) {
+      const res = await axios.delete(`/roomTypes/${id}`);
+      if (res.status === 200) {
         setRoomTypes(
           roomTypes.filter((roomType) => roomType.room_type_id !== id),
         );

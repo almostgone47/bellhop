@@ -3,8 +3,9 @@ import db from '../db.mjs';
 
 const getRoomBookingsByBookingId = async (bookingId) => {
   const [rows] = await db.query(
-    `SELECT room_type_id AS roomTypeId, start_date AS startDate, end_date AS endDate  FROM room_bookings 
-	 WHERE booking_id = ?`,
+    `SELECT room_type_id AS roomTypeId, start_date AS startDate, end_date AS endDate  
+     FROM room_bookings 
+	   WHERE booking_id = ?`,
     [bookingId],
   );
   return rows;
@@ -13,7 +14,7 @@ const getRoomBookingsByBookingId = async (bookingId) => {
 const getRoomBookingById = async (roomBookingId) => {
   const [rows] = await db.query(
     `SELECT * FROM room_bookings 
-	 WHERE room_booking_id = ?`,
+	   WHERE room_booking_id = ?`,
     [roomBookingId],
   );
   return rows[0];

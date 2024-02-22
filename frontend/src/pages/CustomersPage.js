@@ -30,10 +30,16 @@ function CustomersPage() {
 
   const onDeleteCustomer = async (id) => {
     try {
-      await axios.delete(`/customers/${id}`);
-      setCustomers(customers.filter((customer) => customer.customer_id !== id));
+      const res = await axios.delete(`/customers/${id}`);
+      if (res.status === 200) {
+        setCustomers(
+          customers.filter((customer) => customer.customer_id !== id),
+        );
+        toast.success('Customer Deleted');
+      }
     } catch (error) {
-      console.error('Error deleting customer type:', error);
+      console.error('Error deleting customer:', error);
+      toast.error('Error deleting customer');
     }
   };
 

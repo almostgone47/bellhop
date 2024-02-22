@@ -27,7 +27,7 @@ CREATE TABLE rooms (
     room_id INT AUTO_INCREMENT PRIMARY KEY,
     room_type_id INT NOT NULL,
 	room_number INT NOT NULL UNIQUE,
-	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id)
+	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id) ON DELETE CASCADE
 );
 
 CREATE TABLE bookings (
@@ -36,7 +36,7 @@ CREATE TABLE bookings (
 	total_paid FLOAT DEFAULT '0.00',
     date_created DATE DEFAULT (CURDATE()),
     status ENUM('arriving', 'checkedin unpaid', 'checkedin paid', 'checked out') DEFAULT 'arriving',
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
 );
 
 CREATE TABLE room_bookings (
@@ -49,7 +49,7 @@ CREATE TABLE room_bookings (
     nights INT NOT NULL,
     booked_price FLOAT NOT NULL,
     FOREIGN KEY (room_id) REFERENCES rooms(room_id),
-	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id),
+	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id) ON DELETE CASCADE,
 	FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
 );  
 

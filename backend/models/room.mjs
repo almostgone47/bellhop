@@ -1,13 +1,6 @@
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const createRoom = async (room) => {
-  await db.query(
-    `INSERT INTO rooms (room_type_id, room_number) VALUES (?, ?)`,
-    [room.roomTypeId, room.roomNumber],
-  );
-};
-
 const getAllRooms = async () => {
   const [rows] = await db.query(
     `SELECT rooms.*, room_types.name as type_name, room_types.price
@@ -26,6 +19,13 @@ const getRoomById = async (roomId) => {
     [roomId],
   );
   return rows[0];
+};
+
+const createRoom = async (room) => {
+  await db.query(
+    `INSERT INTO rooms (room_type_id, room_number) VALUES (?, ?)`,
+    [room.roomTypeId, room.roomNumber],
+  );
 };
 
 const updateRoom = async (roomId, room) => {
