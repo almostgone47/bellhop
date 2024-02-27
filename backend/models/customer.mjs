@@ -1,58 +1,79 @@
+// CRUD Operations for Customers entity: 
+//      Create new customer
+//      View all customers
+//      Search for customer by email
+//      Delete customer
+//      Update customer
+
+//Import dependencies
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const getAllCustomers = async () => {
-  const [rows] = await db.query(`
-    SELECT * FROM customers`);
+// DISPLAY all current customers
+const getCustomers = async () => {
+  const [rows] = await db.query(
+    `SELECT * FROM customers`,
+  );
   return rows;
 };
 
-const getCustomerById = async (customerId) => {
+// SEARCH for customer by ID
+const getCustomerByID = async (id) => {
   const [rows] = await db.query(
-    `SELECT * FROM customers 
-     WHERE customer_id = ?`,
-    [customerId],
+    `SELECT * FROM customers
+     WHERE customers.customer_id = ?`,
+    [id],
   );
   return rows[0];
 };
 
-const createCustomer = async (customer) => {
+//SEARCH for customer by email
+const getCustomerByEmail = async (email) => {
+  const [rows] = await db.query(
+    `SELECT *
+     FROM customers
+     WHERE customers.email = ?`,
+    [email],
+  );
+  return rows[0];
+};
+
+// CREATE NEW customer
+const createCustomer = async ({first_name, last_name, email, address}) => {
   await db.query(
     `INSERT INTO customers (first_name, last_name, email, address) 
-	 VALUES (?, ?, ?, ?)`,
-    [customer.firstName, customer.lastName, customer.email, customer.address],
+    VALUES (?, ? , ? , ?)`,
+    [customer.first_name, customer.last_name, customer.email, customer.address]
   );
-};
+  }
 
-const updateCustomer = async (customerId, customer) => {
-  const [rows] = await db.query(
-    `UPDATE customers 
-    SET first_name = ?, last_name = ?, email = ?, address = ? 
-    WHERE customer_id = ?`,
-    [
-      customer.firstName,
-      customer.lastName,
-      customer.email,
-      customer.address,
-      customerId,
-    ],
-  );
-  return rows[0];
-};
+//UPDATE existing customer
+const updateCustomer = async ({first_name, last_name, email, address}) => {
+   await db.query (
+    `UPDATE customers SET first_name = customer.first_name,
+     last_name = customer.last_name, email = customer.email, address = customer.address
+     WHERE customer_id = ?`,
+     [customer.first_name, customer.last_name, customer.email, customer.address]
+  )
+}
 
-const deleteCustomer = async (customerId) => {
+//DELETE customer
+const deleteCustomergById = async (id) => {
   const [result] = await db.query(
-    `DELETE FROM customers 
-  	 WHERE customer_id = ?`,
-    [customerId],
+    `
+    DELETE FROM customers 
+    WHERE customer_id = ?`,
+    [id],
   );
-  return result.affectedRows;
+  return result.deletedCount;
 };
 
+//EXPORT the variables for use in the controller file
 export {
+  getCustomers,
+  getCustomerByID,
+  getCustomerByEmail,
   createCustomer,
-  getAllCustomers,
-  getCustomerById,
   updateCustomer,
-  deleteCustomer,
+  deleteCustomergById,
 };
