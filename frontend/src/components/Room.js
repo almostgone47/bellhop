@@ -10,10 +10,10 @@ function Room({room, onEdit, onDelete}) {
       <td>{room.room_type_id}</td>
       <td>{room.room_number}</td>
       <td>
-        <FaEdit onClick={() => onEdit(customer)} />
+        <FaEdit onClick={() => onEdit(room)} />
       </td>
       <td>
-        <FaRegTrashAlt onClick={() => onDelete(customer.customer_id)} />
+        <FaRegTrashAlt onClick={() => onDelete(room.room_id)} />
       </td>
     </tr>
   );

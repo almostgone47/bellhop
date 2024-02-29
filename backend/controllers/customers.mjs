@@ -2,7 +2,7 @@
 
 //Import dependencies
 import express from 'express';
-import * as customer from './models/customer.mjs';
+import * as customer from '../models/customer.mjs';
 
 const router = express.Router();
 
@@ -34,28 +34,28 @@ router.get('/customers/:id', async (req, res) => {
 
 //Retreive Customer by Email
 router.get('/customers/:email', async (req, res) => {
-    try {
-      const data = await customer.getCustomerByEmail(req.params.email);
-      if (data) {
-        res.json(data);
-      } else {
-        res.status(404).send({message: 'Customer not found'});
-      }
-    } catch (error) {
-      res.status(500).json({error: 'Failed to retrieve Customer.'});
+  try {
+    const data = await customer.getCustomerByEmail(req.params.email);
+    if (data) {
+      res.json(data);
+    } else {
+      res.status(404).send({message: 'Customer not found'});
     }
-  });
+  } catch (error) {
+    res.status(500).json({error: 'Failed to retrieve Customer.'});
+  }
+});
 
 //Create Customer
 router.post('/customers', async (req, res) => {
   console.log('POST CUSTOMER');
   try {
     await customer.createCustomer(
-        req.body.first_name, 
-        req.body.last_name, 
-        req.body.email,
-        req.body.address
-        );
+      req.body.first_name,
+      req.body.last_name,
+      req.body.email,
+      req.body.address,
+    );
     res.json({message: 'Customer created'});
   } catch (error) {
     console.error('Error creating Customer:', error);
@@ -69,11 +69,11 @@ router.post('/customers', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const customerData = [
-        req.params.id,
-        req.body.first_name,
-        req.body.last_name,
-        req.body.email,
-        req.body.address
+      req.params.id,
+      req.body.first_name,
+      req.body.last_name,
+      req.body.email,
+      req.body.address,
     ];
     await customer.updateCustomer(customerData);
     res.json({message: 'Customer updated.'});

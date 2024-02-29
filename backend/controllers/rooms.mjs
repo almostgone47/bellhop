@@ -2,7 +2,7 @@
 
 //Import dependencies
 import express from 'express';
-import * as customer from './models/rooms.mjs';
+import * as customer from '../models/room.mjs';
 
 const router = express.Router();
 
@@ -32,28 +32,25 @@ router.get('/rooms/:id', async (req, res) => {
   }
 });
 
-//Retreive Available Rooms 
+//Retreive Available Rooms
 router.get('/rooms', async (req, res) => {
-    try {
-      const data = await room.getAvailableRooms();
-      if (data) {
-        res.json(data);
-      } else {
-        res.status(404).send({message: 'Available rooms not found'});
-      }
-    } catch (error) {
-      res.status(500).json({error: 'Failed to retrieve available rooms.'});
+  try {
+    const data = await room.getAvailableRooms();
+    if (data) {
+      res.json(data);
+    } else {
+      res.status(404).send({message: 'Available rooms not found'});
     }
-  });
+  } catch (error) {
+    res.status(500).json({error: 'Failed to retrieve available rooms.'});
+  }
+});
 
 //Create Room
 router.post('/rooms', async (req, res) => {
   console.log('POST ROOM');
   try {
-    await room.createRoom(
-        req.body.room_type_id, 
-        req.body.room_number, 
-        );
+    await room.createRoom(req.body.room_type_id, req.body.room_number);
     res.json({message: 'Room created'});
   } catch (error) {
     console.error('Error creating Room:', error);
