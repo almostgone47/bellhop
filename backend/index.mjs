@@ -11,6 +11,8 @@ const PORT = process.env.PORT;
 const app = express();
 app.use(express.json());
 
+app.use(express.static('../frontend/build'));
+
 app.use('/bookings', bookings);
 app.use('/roomBookings', roomBookings);
 app.use('/customers', customers);
