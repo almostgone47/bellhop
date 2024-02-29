@@ -1,71 +1,79 @@
+// CRUD Operations for Customers entity: 
+//      Create new customer
+//      View all customers
+//      Search for customer by email
+//      Delete customer
+//      Update customer
+
+//Import dependencies
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const getAllRooms = async () => {
+// DISPLAY all current customers
+const getCustomers = async () => {
   const [rows] = await db.query(
-    `SELECT rooms.*, room_types.name as type_name, room_types.price
-     FROM rooms
-     JOIN room_types ON rooms.room_type_id = room_types.room_type_id`,
+    `SELECT * FROM customers`,
   );
   return rows;
 };
 
-const getRoomById = async (roomId) => {
+// SEARCH for customer by ID
+const getCustomerByID = async (id) => {
   const [rows] = await db.query(
-    `SELECT rooms.*, room_types.name as type_name, room_types.price
-     FROM rooms
-     JOIN room_types ON rooms.room_type_id = room_types.room_type_id
-     WHERE rooms.room_id = ?`,
-    [roomId],
+    `SELECT * FROM customers
+     WHERE customers.customer_id = ?`,
+    [id],
   );
   return rows[0];
 };
 
-const createRoom = async (room) => {
-  await db.query(
-    `INSERT INTO rooms (room_type_id, room_number) VALUES (?, ?)`,
-    [room.roomTypeId, room.roomNumber],
-  );
-};
-
-const updateRoom = async (roomId, room) => {
-  await db.query(
-    `UPDATE rooms SET room_type_id = ?, room_number = ? 
-	 WHERE room_id = ?`,
-    [room.roomTypeId, room.roomNumber, roomId],
-  );
-};
-
-const deleteRoom = async (roomId) => {
-  await db.query(
-    `
-  	DELETE FROM rooms 
-	WHERE room_id = ?`,
-    [roomId],
-  );
-};
-
-const showAvailableRooms = async (startDate, endDate) => {
+//SEARCH for customer by email
+const getCustomerByEmail = async (email) => {
   const [rows] = await db.query(
-    `SELECT rooms.*, room_types.name as type_name, room_types.price
-     FROM rooms
-     JOIN room_types ON rooms.room_type_id = room_types.room_type_id
-     WHERE rooms.room_id NOT IN (
-       SELECT room_bookings.room_id
-       FROM room_bookings
-       WHERE room_bookings.start_date <= ? AND room_bookings.end_date >= ?
-       AND room_bookings.room_id IS NOT NULL
-     )`,
-    [endDate, startDate],
+    `SELECT *
+     FROM customers
+     WHERE customers.email = ?`,
+    [email],
   );
-  return rows;
+  return rows[0];
 };
 
+// CREATE NEW customer
+const createCustomer = async ({first_name, last_name, email, address}) => {
+  await db.query(
+    `INSERT INTO customers (first_name, last_name, email, address) 
+    VALUES (?, ? , ? , ?)`,
+    [customer.first_name, customer.last_name, customer.email, customer.address]
+  );
+  }
+
+//UPDATE existing customer
+const updateCustomer = async ({first_name, last_name, email, address}) => {
+   await db.query (
+    `UPDATE customers SET first_name = customer.first_name,
+     last_name = customer.last_name, email = customer.email, address = customer.address
+     WHERE customer_id = ?`,
+     [customer.first_name, customer.last_name, customer.email, customer.address]
+  )
+}
+
+//DELETE customer
+const deleteCustomergById = async (id) => {
+  const [result] = await db.query(
+    `
+    DELETE FROM customers 
+    WHERE customer_id = ?`,
+    [id],
+  );
+  return result.deletedCount;
+};
+
+//EXPORT the variables for use in the controller file
 export {
-  createRoom,
-  getAllRooms,
-  getRoomById,
-  updateRoom,
-  deleteRoom,
-  showAvailableRooms,
+  getCustomers,
+  getCustomerByID,
+  getCustomerByEmail,
+  createCustomer,
+  updateCustomer,
+  deleteCustomergById,
 };

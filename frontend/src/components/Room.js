@@ -1,4 +1,6 @@
 import React from 'react';
+
+// Import icons
 import {FaEdit, FaRegTrashAlt} from 'react-icons/fa';
 
 function Room({room, onEdit, onDelete}) {
@@ -8,11 +10,10 @@ function Room({room, onEdit, onDelete}) {
       <td>{room.room_type_id}</td>
       <td>{room.room_number}</td>
       <td>
-        <FaEdit onClick={() => onEdit(room)} style={{cursor: 'pointer'}} />
-        <FaRegTrashAlt
-          onClick={() => onDelete(room.room_id)}
-          style={{cursor: 'pointer', marginLeft: '10px'}}
-        />
+        <FaEdit onClick={() => onEdit(customer)} />
+      </td>
+      <td>
+        <FaRegTrashAlt onClick={() => onDelete(customer.customer_id)} />
       </td>
     </tr>
   );

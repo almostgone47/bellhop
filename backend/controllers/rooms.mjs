@@ -1,64 +1,86 @@
+//Controllers for Rooms Entity
+
+//Import dependencies
 import express from 'express';
-import * as room from '../models/room.mjs';
+import * as customer from './models/rooms.mjs';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+//Retreive All Rooms
+router.get('/rooms', async (req, res) => {
   try {
-    const rooms = await room.getAllRooms();
+    console.log('GET ROOMS');
+    const rooms = await customer.getRooms();
     res.json(rooms);
   } catch (error) {
-    res.status(500).json({message: error.message});
+    console.error('Error fetching rooms:', error);
+    res.status(500).json({error: 'Failed to retrieve rooms.'});
   }
 });
 
-router.get('/:id', async (req, res) => {
+//Retreive Room by ID
+router.get('/rooms/:id', async (req, res) => {
   try {
-    const room = await room.getRoomById(req.params.id);
-    if (room) {
-      res.json(room);
+    const data = await customer.getRoomById(req.params.id);
+    if (data) {
+      res.json(data);
     } else {
-      res.status(404).json({message: 'Room not found'});
+      res.status(404).send({message: 'Room not found'});
     }
   } catch (error) {
-    res.status(500).json({message: error.message});
-  }
-});
-router.post('/', async (req, res) => {
-  try {
-    await room.createRoom(req.body);
-    res.status(201).json({message: 'Room created successfully'});
-  } catch (error) {
-    res.status(500).json({message: error.message});
+    res.status(500).json({error: 'Failed to retrieve Room.'});
   }
 });
 
+//Retreive Available Rooms 
+router.get('/rooms', async (req, res) => {
+    try {
+      const data = await room.getAvailableRooms();
+      if (data) {
+        res.json(data);
+      } else {
+        res.status(404).send({message: 'Available rooms not found'});
+      }
+    } catch (error) {
+      res.status(500).json({error: 'Failed to retrieve available rooms.'});
+    }
+  });
 
-router.put('/:id', async (req, res) => {
+//Create Room
+router.post('/rooms', async (req, res) => {
+  console.log('POST ROOM');
   try {
-    await room.updateRoom(req.params.id, req.body);
-    res.json({message: 'Room updated successfully'});
+    await room.createRoom(
+        req.body.room_type_id, 
+        req.body.room_number, 
+        );
+    res.json({message: 'Room created'});
   } catch (error) {
-    res.status(500).json({message: error.message});
+    console.error('Error creating Room:', error);
+    res.status(400).json({
+      error: 'Could not create Room.',
+    });
   }
 });
 
-router.delete('/:id', async (req, res) => {
+//Delete Room by ID
+router.delete('/rooms:id', async (req, res) => {
   try {
-    await room.deleteRoom(req.params.id);
-    res.json({message: 'Room deleted successfully'});
+    const deletedCount = await customer.deleteRoomById(req.params.id);
+    if (deletedCount === 1) {
+      res.status(200).send({
+        Success: 'Room deleted',
+      });
+    } else {
+      res.status(404).json({
+        Error: 'No Room found with the given ID',
+      });
+    }
   } catch (error) {
-    res.status(500).json({message: error.message});
-  }
-});
-
-router.get('/available', async (req, res) => {
-  try {
-    const {startDate, endDate} = req.query;
-    const availableRooms = await room.showAvailableRooms(startDate, endDate);
-    res.json(availableRooms);
-  } catch (error) {
-    res.status(500).json({message: error.message});
+    console.log('Error deleting Room:', error);
+    res.status(500).send({
+      error: 'Could not delete Room',
+    });
   }
 });
 

@@ -1,67 +1,74 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate, Link} from 'react-router-dom';
-import {FaPlusCircle} from 'react-icons/fa';
-import axios from 'axios';
+import { React, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+
+//Enable notifications
 import toast from 'react-hot-toast';
 
+// Allows for async and await
+import axios from 'axios';
+
 import Customers from '../components/Customers';
+import {FaPlusCircle} from 'react-icons/fa';
 
-function CustomersPage() {
-  const navigate = useNavigate();
-  const [customers, setCustomers] = useState([]);
+function CustomerPage({setCustomers}) {
+    // Use the Navigate for redirection
+    const redirect = useNavigate();
 
-  useEffect(() => {
-    loadCustomers();
-  }, []);
+    // Use state to bring in the data
+    const [customers, setCustomers] = useState([]);
 
-  const loadCustomers = async () => {
-    try {
-      const res = await axios.get('/customers');
-      setCustomers(res.data);
-    } catch (error) {
-      console.error('Failed to load customer types:', error);
-      toast.error('Failed to load customer types');
+    // RETRIEVE all customers
+    const loadCustomers = async () => {
+        const response = await fetch('/customers');
+        const customers = await response.json();
+        setCustomers(customers);
     }
-  };
-
-  const onEditCustomer = (customer) => {
-    navigate('/updateCustomer', {state: {customer}});
-  };
-
-  const onDeleteCustomer = async (id) => {
-    try {
-      const res = await axios.delete(`/customers/${id}`);
-      if (res.status === 200) {
-        setCustomers(
-          customers.filter((customer) => customer.customer_id !== id),
-        );
-        toast.success('Customer Deleted');
-      }
-    } catch (error) {
-      console.error('Error deleting customer:', error);
-      toast.error('Error deleting customer');
+    
+    //UPDATE customer by id
+    const onEditCustomer = async customer => {
+        setCustomer(customer);
+        redirect("/updateCustomer");
     }
-  };
 
-  return (
-    <section className="content-area">
-      <h2>Customers</h2>
-      <p id="addCustomerBtn">
-        <Link to="/createCustomer">
-          <FaPlusCircle /> Add Customer
-        </Link>
-      </p>
-      {customers.length > 0 ? (
-        <Customers
-          customers={customers}
-          onEdit={onEditCustomer}
-          onDelete={onDeleteCustomer}
-        />
-      ) : (
-        <p>No customers available.</p>
-      )}
-    </section>
-  );
+    //DELETE customer by id
+    const onDeleteCustomer = async _id => {
+        const response = await fetch(`/customers/${_id}`, { method: 'DELETE' });
+        if (response.status === 200) {
+            const getResponse = await fetch('/customers');
+            const customers = await getResponse.json();
+            setCustomers(customers);
+        } else {
+            console.error(`There was an error and the Customer could not be deleted from your database. = ${_id}, status code = ${response.status}`)
+        }
+    }
+
+    // LOAD all customers
+    useEffect(() => {
+        loadCustomers();
+    }, []);
+
+    // DISPLAY customers
+    return (
+        <section className="content-area">
+          <h2>Customers</h2>
+          <p id="addCustomerBtn">
+            <Link to="/createCustomer">
+              <FaPlusCircle />
+              Add Customer
+            </Link>
+          </p>
+          {customers.length > 0 ? (
+            <Customers
+              customers={customers}
+              onEdit={onEditCustomer}
+              onDelete={onDeleteCustomer}
+            />
+          ) : (
+            <p>No customers found.</p>
+          )}
+        </section>
+      );
 }
 
-export default CustomersPage;
+export default CustomerPage;
