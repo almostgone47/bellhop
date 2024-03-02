@@ -32,7 +32,7 @@ function BookingsPage() {
 
   const onDeleteBooking = async (id) => {
     try {
-      axios.delete(`/bookings/${id}`);
+      await axios.delete(`/bookings/${id}`);
       setBookings(bookings.filter((booking) => booking.booking_id !== id));
       toast.success('Booking Deleted');
     } catch (error) {
