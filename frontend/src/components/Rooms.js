@@ -1,29 +1,20 @@
 import React from 'react';
-import Room from './Room';
+import Room from '../components/Room';
 
-function Rooms({rooms, onEdit, onDelete}) {
+function Rooms({rooms, onDelete, onEdit}) {
   return (
     <table id="rooms">
-      <caption>
-        <strong>Rooms</strong>{' '}
-      </caption>
+      <caption>Add and Edit Rooms</caption>
       <thead>
         <tr>
           <th>Room ID</th>
           <th>Room Type ID</th>
           <th>Room Number</th>
-          <th>Delete</th>
-          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
         {rooms.map((room, i) => (
-          <Room
-            room={room.room_id}
-            key={i}
-            onDelete={onDelete}
-            onEdit={onEdit}
-          />
+          <Room room={room} key={i} onDelete={onDelete} onEdit={onEdit} />
         ))}
       </tbody>
     </table>

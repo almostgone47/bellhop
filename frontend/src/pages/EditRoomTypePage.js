@@ -15,7 +15,7 @@ const AddRoomTypePageTable = () => {
   useEffect(() => {
     if (!state?.room) {
       toast.error('Room data not found.');
-      navigate('/rooms');
+      navigate('/settings/rooms');
     } else {
       setRoomType({
         name: state.roomType.name,
@@ -34,7 +34,7 @@ const AddRoomTypePageTable = () => {
     try {
       await axios.put('/roomTypes', {roomType});
       toast.success('Room Type successfully updated!');
-      navigate('/roomTypes');
+      navigate('/settings/roomTypes');
     } catch (error) {
       toast.error(`Failed to add room type. ${error.message}`);
     }

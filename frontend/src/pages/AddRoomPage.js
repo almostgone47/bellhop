@@ -33,7 +33,7 @@ const AddRoomPage = () => {
     try {
       await axios.post('/rooms', {room});
       toast.success('Room successfully added!');
-      navigate('/rooms');
+      navigate('/settings/rooms');
     } catch (error) {
       toast.error(`Failed to add room. ${error.message}`);
     }

@@ -7,7 +7,7 @@ import customers from './controllers/customers.mjs';
 import roomTypes from './controllers/roomTypes.mjs';
 import rooms from './controllers/rooms.mjs';
 
-const PORT = process.env.PORT;
+const PORT = 5000;
 const app = express();
 app.use(express.json());
 

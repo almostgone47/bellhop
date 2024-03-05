@@ -16,7 +16,7 @@ header {
 }
 
 main {
-  min-height: 82vh;
+  min-height: 84vh;
   margin: 18px;
 }
 
@@ -46,10 +46,18 @@ a {
 }
 
 /*  ----- Navigation ----- Override text links for navigation only.  */
-nav {
+.main-nav {
   display: flex;
-  justify-content: center;
-  width: 50%;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 2%;
+}
+
+nav div {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 nav a {
@@ -171,6 +179,7 @@ input {
   margin: 2px;
   border-radius: 5px;
   color: var(--medium-green);
+  width: 200px;
 }
 
 #header-logo {
@@ -181,11 +190,11 @@ input {
 }
 
 #header-logo-container {
-  width: 160px;
-  margin-left: 30px;
+  width: 140px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-right: 3%;
 }
 
 .content-area {
@@ -195,7 +204,7 @@ input {
   border-radius: 5px;
   max-width: 1200px;
   min-width: 66%;
-  min-height: 69vh;
+  min-height: 70vh;
   margin-bottom: 12px;
 }
 
@@ -225,4 +234,43 @@ figcaption {
   position: relative;
   top: 3px;
   margin-right: 3px;
+}
+
+.dropDown {
+  padding: 0px;
+  background: #fff;
+  border: 1px solid #999;
+  margin: 0;
+  color: #000;
+  position: absolute;
+  min-width: 225px;
+  list-style: none;
+  right: 0px;
+  top: 65px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
+  z-index: 1;
+}
+
+#searchDropDown li {
+  padding: 8px;
+  border-bottom: 1px solid #777;
+}
+
+.settingsSidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ccc;
+}
+
+.settingsSidebar a {
+  padding: 18px;
+  text-decoration: none;
+}
+
+.settingsLayout {
+  display: flex;
+}
+
+.settingsContent {
+  width: 82%;
 }

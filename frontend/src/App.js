@@ -19,7 +19,8 @@ import EditRoomTypePage from './pages/EditRoomTypePage';
 import CustomersPage from './pages/CustomersPage';
 import AddCustomerPage from './pages/AddCustomerPage';
 import EditCustomerPage from './pages/EditCustomerPage';
-import logo from './logo.png';
+
+import SettingsLayout from './layouts/SettingsLayout';
 
 function App() {
   return (
@@ -27,12 +28,7 @@ function App() {
       <BrowserRouter>
         <header>
           <Toaster position="top-center" />
-          <div id="header-logo-container">
-            <img src={logo} id="header-logo" alt="initials logo" />
-            <h1>BellHop</h1>
-          </div>
           <Navbar />
-          <span></span>
         </header>
 
         <main>
@@ -41,17 +37,25 @@ function App() {
             <Route path="/createBooking" element={<AddBookingPage />} />
             <Route path="/updateBooking" element={<EditBookingPage />} />
 
-            <Route path="/rooms" element={<RoomsPage />} />
-            <Route path="/updateRoom" element={<EditRoomPage />} />
-            <Route path="/createRoom" element={<AddRoomPage />} />
-
-            <Route path="/roomTypes" element={<RoomTypesPage />} />
-            <Route path="/updateRoomType" element={<EditRoomTypePage />} />
-            <Route path="/createRoomType" element={<AddRoomTypePage />} />
-
             <Route path="/customers" element={<CustomersPage />} />
             <Route path="/updateCustomer" element={<EditCustomerPage />} />
             <Route path="/createCustomer" element={<AddCustomerPage />} />
+
+            <Route path="/settings" element={<SettingsLayout />}>
+              <Route path="/settings/rooms" element={<RoomsPage />} />
+              <Route path="/settings/updateRoom" element={<EditRoomPage />} />
+              <Route path="/settings/createRoom" element={<AddRoomPage />} />
+
+              <Route path="/settings/roomTypes" element={<RoomTypesPage />} />
+              <Route
+                path="/settings/updateRoomType"
+                element={<EditRoomTypePage />}
+              />
+              <Route
+                path="/settings/createRoomType"
+                element={<AddRoomTypePage />}
+              />
+            </Route>
           </Routes>
         </main>
 

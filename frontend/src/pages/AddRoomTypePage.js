@@ -20,7 +20,7 @@ const AddRoomTypePageTable = () => {
     try {
       await axios.post('/roomTypes', {roomType});
       toast.success('Room Type successfully added!');
-      navigate('/roomTypes');
+      navigate('/settings/roomTypes');
     } catch (error) {
       alert(`Failed to add room type. ${error.message}`);
     }

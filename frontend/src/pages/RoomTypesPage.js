@@ -25,7 +25,7 @@ function RoomTypesPage() {
   };
 
   const onEditRoomType = (roomType) => {
-    navigate('/updateRoomType', {state: {roomType}});
+    navigate('/settings/updateRoomType', {state: {roomType}});
   };
 
   const onDeleteRoomType = async (id) => {
@@ -47,7 +47,7 @@ function RoomTypesPage() {
     <section className="content-area">
       <h2>Room Types</h2>
       <p id="addRoomTypeBtn">
-        <Link to="/createRoomType">
+        <Link to="/settings/createRoomType">
           <FaPlusCircle /> Add Room Type
         </Link>
       </p>

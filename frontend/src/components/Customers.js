@@ -1,12 +1,10 @@
 import React from 'react';
-import Customer from './Customer';
+import Customer from '../components/Customer';
 
-function Customers({customers, onEdit, onDelete}) {
+function Customers({customers, onDelete, onEdit}) {
   return (
     <table id="customers">
-      <caption>
-        <strong>Customers</strong>{' '}
-      </caption>
+      <caption>Add and Edit Rooms</caption>
       <thead>
         <tr>
           <th>Customer ID</th>
@@ -14,14 +12,12 @@ function Customers({customers, onEdit, onDelete}) {
           <th>Last Name</th>
           <th>Email</th>
           <th>Address</th>
-          <th>Delete</th>
-          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
         {customers.map((customer, i) => (
           <Customer
-            customer={customer.customer_id}
+            customer={customer}
             key={i}
             onDelete={onDelete}
             onEdit={onEdit}

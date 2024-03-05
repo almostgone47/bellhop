@@ -14,7 +14,7 @@ const EditRoomPage = () => {
   useEffect(() => {
     if (!state?.room) {
       toast.error('Room data not found.');
-      navigate('/rooms');
+      navigate('/settings/rooms');
     } else {
       setRoom({
         roomTypeId: state.room.room_type_id,
@@ -32,7 +32,7 @@ const EditRoomPage = () => {
     try {
       await axios.put(`/rooms/${state.room.room_id}`, room);
       toast.success('Room updated successfully!');
-      navigate('/rooms');
+      navigate('/settings/rooms');
     } catch (error) {
       toast.error(`Failed to update room: ${error.message || error}`);
     }
