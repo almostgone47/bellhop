@@ -49,7 +49,7 @@ CREATE TABLE room_bookings (
     nights INT NOT NULL,
     booked_price FLOAT NOT NULL,
     FOREIGN KEY (room_id) REFERENCES rooms(room_id),
-	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id) ON DELETE CASCADE,
+	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id),
 	FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
 );  
 

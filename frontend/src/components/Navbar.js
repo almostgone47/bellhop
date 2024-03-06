@@ -36,7 +36,7 @@ function Navbar() {
       />
       {isVisible && (
         <div
-          className="dropDown"
+          id="settingsDropDown"
           style={{maxWidth: '230px', padding: '10px'}}
           onClick={navToSettings}
         >

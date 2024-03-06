@@ -7,10 +7,10 @@ function Bookings({bookings, onDelete, onEdit}) {
       <caption>Add and Edit Bookings</caption>
       <thead>
         <tr>
-          <th>Booking ID</th>
-          <th>Customer ID</th>
+          <th>Guest Name</th>
+          <th>Room Numbers</th>
           <th>Total Paid</th>
-          <th>Date Created</th>
+          <th>Arrival Date</th>
           <th>Status</th>
           <th>Edit</th>
         </tr>

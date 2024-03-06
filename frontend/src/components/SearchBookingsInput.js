@@ -49,7 +49,7 @@ const SearchBookingsInput = () => {
         placeholder="Search bookings..."
       />
       {searchResults.length > 0 && (
-        <ul className="dropDown">
+        <ul id="searchDropDown">
           {searchResults.map((result, index) => (
             <li
               key={index}
