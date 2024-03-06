@@ -8,12 +8,14 @@ const AddRoomTypePageTable = () => {
   const [roomType, setRoomType] = useState({
     name: '',
     price: '',
-    capacity: '',
+    description: '',
   });
 
   const changeHandler = (e) => {
-    const {name, value} = e.target;
-    setRoomType({...roomType, [name]: value});
+    setRoomType({
+      ...roomType,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const addRoomType = async () => {
@@ -45,7 +47,7 @@ const AddRoomTypePageTable = () => {
           onChange={changeHandler}
         />
         <input
-          type="number"
+          type="text"
           placeholder="Description"
           name="description"
           value={roomType.description}

@@ -24,7 +24,7 @@ function RoomsPage() {
     }
   };
 
-  const onEditRoom = (room) => {
+  const gotToEditPage = (room) => {
     navigate('/settings/updateRoom', {state: {room}});
   };
 
@@ -48,7 +48,7 @@ function RoomsPage() {
         </Link>
       </p>
       {rooms.length > 0 ? (
-        <Rooms rooms={rooms} onEdit={onEditRoom} onDelete={onDeleteRoom} />
+        <Rooms rooms={rooms} onDelete={onDeleteRoom} />
       ) : (
         <p>No rooms available.</p>
       )}

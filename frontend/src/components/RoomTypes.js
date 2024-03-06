@@ -1,4 +1,5 @@
 import React from 'react';
+
 import RoomType from './RoomType';
 
 function RoomTypes({roomTypes, onDelete, onEdit}) {
@@ -19,8 +20,8 @@ function RoomTypes({roomTypes, onDelete, onEdit}) {
           <RoomType
             key={roomType.room_type_id}
             roomType={roomType}
-            onDelete={() => onDelete(roomType.room_type_id)}
-            onEdit={() => onEdit(roomType)}
+            onDelete={onDelete}
+            onEdit={onEdit}
           />
         ))}
       </tbody>

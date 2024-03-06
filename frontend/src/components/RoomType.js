@@ -1,7 +1,14 @@
 import React from 'react';
 import {FaEdit, FaRegTrashAlt} from 'react-icons/fa';
+import {useNavigate} from 'react-router-dom';
 
 function RoomType({roomType, onEdit, onDelete}) {
+  const navigate = useNavigate();
+
+  const onEditRoomType = (roomType) => {
+    navigate('/settings/updateRoomType', {state: {roomType}});
+  };
+
   return (
     <tr>
       <td>{roomType.room_type_id}</td>
@@ -9,7 +16,10 @@ function RoomType({roomType, onEdit, onDelete}) {
       <td>{roomType.description}</td>
       <td>{roomType.price}</td>
       <td>
-        <FaEdit onClick={() => onEdit(roomType)} style={{cursor: 'pointer'}} />
+        <FaEdit
+          onClick={() => onEditRoomType(roomType)}
+          style={{cursor: 'pointer'}}
+        />
         <FaRegTrashAlt
           onClick={() => onDelete(roomType.room_type_id)}
           style={{cursor: 'pointer', marginLeft: '10px'}}

@@ -1,14 +1,15 @@
 import {React, useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {Link} from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 import Bookings from '../components/Bookings';
+import CreateBookingModal from '../components/CreateBookingModal';
 import {FaPlusCircle} from 'react-icons/fa';
 
 function BookingsPage() {
-  const redirect = useNavigate();
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
@@ -26,14 +27,11 @@ function BookingsPage() {
     }
   };
 
-  const onEditBooking = async (booking) => {
-    redirect('/updateBooking', {state: {booking}});
-  };
-
   const onDeleteBooking = async (id) => {
     try {
       axios.delete(`/bookings/${id}`);
       setBookings(bookings.filter((booking) => booking.booking_id !== id));
+      setIsModalOpen(false);
       toast.success('Booking Deleted');
     } catch (error) {
       console.log('Error deleting booking:', error);
@@ -41,21 +39,23 @@ function BookingsPage() {
     }
   };
 
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   return (
     <section className="content-area">
+      <CreateBookingModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
       <h2>Bookings</h2>
-      <p id="addBookingBtn">
-        <Link to="/createBooking">
-          <FaPlusCircle />
-          Add Booking
-        </Link>
-      </p>
+      <button id="addBookingBtn" onClick={toggleModal}>
+        <FaPlusCircle />
+        Add Booking
+      </button>
       {bookings.length > 0 ? (
-        <Bookings
-          bookings={bookings}
-          onEdit={onEditBooking}
-          onDelete={onDeleteBooking}
-        />
+        <Bookings bookings={bookings} onDelete={onDeleteBooking} />
       ) : (
         <p>No bookings available.</p>
       )}

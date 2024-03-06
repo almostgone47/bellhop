@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 const AddRoomPage = () => {
   const navigate = useNavigate();
   const [room, setRoom] = useState({
-    roomTypeId: '',
+    room_type_id: '',
     roomNumber: '',
   });
   const [roomTypes, setRoomTypes] = useState([]);
@@ -44,8 +44,8 @@ const AddRoomPage = () => {
       <h2>Add a Room</h2>
       <div>
         <select
-          name="roomTypeId"
-          value={room.roomTypeId}
+          name="room_type_id"
+          value={room.room_type_id}
           onChange={changeHandler}
         >
           <option value="">Select Room Type</option>

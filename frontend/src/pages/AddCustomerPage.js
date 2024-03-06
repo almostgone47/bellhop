@@ -6,8 +6,8 @@ import toast from 'react-hot-toast';
 const AddCustomerPage = () => {
   const navigate = useNavigate();
   const [customer, setCustomer] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     address: '',
   });
@@ -20,8 +20,8 @@ const AddCustomerPage = () => {
   const addCustomer = async () => {
     try {
       await axios.post('/customers', {
-        first_name: customer.firstName,
-        last_name: customer.lastName,
+        first_name: customer.first_name,
+        last_name: customer.last_name,
         email: customer.email,
         address: customer.address,
       });
@@ -39,15 +39,15 @@ const AddCustomerPage = () => {
         <input
           type="text"
           placeholder="First Name"
-          name="firstName"
-          value={customer.firstName}
+          name="first_name"
+          value={customer.first_name}
           onChange={changeHandler}
         />
         <input
           type="text"
           placeholder="Last Name"
-          name="lastName"
-          value={customer.lastName}
+          name="last_name"
+          value={customer.last_name}
           onChange={changeHandler}
         />
         <input

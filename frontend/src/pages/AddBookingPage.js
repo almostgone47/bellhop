@@ -8,7 +8,7 @@ const AddBookingPage = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState({
     customerId: '',
-    roomBookings: [{roomTypeId: '', startDate: '', endDate: ''}],
+    roomBookings: [{room_type_id: '', start_date: '', end_date: ''}],
   });
 
   const addRoomBooking = () => {
@@ -17,9 +17,9 @@ const AddBookingPage = () => {
       roomBookings: [
         ...booking.roomBookings,
         {
-          roomTypeId: '',
-          startDate: '',
-          endDate: '',
+          room_type_id: '',
+          start_date: '',
+          end_date: '',
         },
       ],
     });
@@ -53,7 +53,7 @@ const AddBookingPage = () => {
     if (res.status === 200) {
       setBooking({
         customerId: '',
-        roomBookings: [{roomTypeId: '', startDate: '', endDate: ''}],
+        roomBookings: [{room_type_id: '', start_date: '', end_date: ''}],
       });
       toast.success('Booking successfully added!');
       navigate('/');
@@ -79,22 +79,22 @@ const AddBookingPage = () => {
           <input
             type="text"
             placeholder="Room Type ID"
-            name={`roomBookings.roomTypeId`}
-            value={roomBooking.roomTypeId}
+            name={`roomBookings.room_type_id`}
+            value={roomBooking.room_type_id}
             onChange={(e) => changeHandler(e, index)}
           />
           <input
             type="date"
             placeholder="Start Date"
-            name={`roomBookings.startDate`}
-            value={roomBooking.startDate}
+            name={`roomBookings.start_date`}
+            value={roomBooking.start_date}
             onChange={(e) => changeHandler(e, index)}
           />
           <input
             type="date"
             placeholder="End Date"
-            name={`roomBookings.endDate`}
-            value={roomBooking.endDate}
+            name={`roomBookings.end_date`}
+            value={roomBooking.end_date}
             onChange={(e) => changeHandler(e, index)}
           />
           <FaRegTrashAlt

@@ -35,7 +35,7 @@ const EditBookingPage = () => {
       ...booking,
       roomBookings: [
         ...booking.roomBookings,
-        {roomTypeId: '', startDate: '', endDate: ''},
+        {room_type_id: '', start_date: '', end_date: ''},
       ],
     });
   };
@@ -86,22 +86,22 @@ const EditBookingPage = () => {
             <input
               type="text"
               placeholder="Room Type ID"
-              name={`roomBookings.roomTypeId`}
-              value={roomBooking.roomTypeId}
+              name={`roomBookings.room_type_id`}
+              value={roomBooking.room_type_id}
               onChange={(e) => changeHandler(e, index)}
             />
             <input
               type="date"
               placeholder="Start Date"
-              name={`roomBookings.startDate`}
-              value={roomBooking.startDate.slice(0, 10)}
+              name={`roomBookings.start_date`}
+              value={roomBooking.start_date.slice(0, 10)}
               onChange={(e) => changeHandler(e, index)}
             />
             <input
               type="date"
               placeholder="End Date"
-              name={`roomBookings.endDate`}
-              value={roomBooking.endDate.slice(0, 10)}
+              name={`roomBookings.end_date`}
+              value={roomBooking.end_date.slice(0, 10)}
               onChange={(e) => changeHandler(e, index)}
             />
             <FaRegTrashAlt onClick={() => removeRoomBooking(index)} />

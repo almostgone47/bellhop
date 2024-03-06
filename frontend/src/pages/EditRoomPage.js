@@ -7,7 +7,7 @@ const EditRoomPage = () => {
   const navigate = useNavigate();
   const {state} = useLocation();
   const [room, setRoom] = useState({
-    roomTypeId: '',
+    room_type_id: '',
     roomNumber: '',
   });
 
@@ -17,7 +17,7 @@ const EditRoomPage = () => {
       navigate('/settings/rooms');
     } else {
       setRoom({
-        roomTypeId: state.room.room_type_id,
+        room_type_id: state.room.room_type_id,
         roomNumber: state.room.room_number,
       });
     }
@@ -45,8 +45,8 @@ const EditRoomPage = () => {
         <input
           type="number"
           placeholder="Room Type ID"
-          name="roomTypeId"
-          value={room.roomTypeId}
+          name="room_type_id"
+          value={room.room_type_id}
           onChange={changeHandler}
         />
         <input

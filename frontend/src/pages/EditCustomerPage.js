@@ -7,8 +7,8 @@ const EditCustomerPage = () => {
   const navigate = useNavigate();
   const {state} = useLocation();
   const [customer, setCustomer] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     address: '',
   });
@@ -19,8 +19,8 @@ const EditCustomerPage = () => {
       navigate('/customers');
     } else {
       setCustomer({
-        firstName: state.customer.first_name,
-        lastName: state.customer.last_name,
+        first_name: state.customer.first_name,
+        last_name: state.customer.last_name,
         email: state.customer.email,
         address: state.customer.address,
       });
@@ -35,8 +35,8 @@ const EditCustomerPage = () => {
   const editCustomer = async () => {
     try {
       await axios.put(`/customers/${state.customer.customer_id}`, {
-        first_name: customer.firstName,
-        last_name: customer.lastName,
+        first_name: customer.first_name,
+        last_name: customer.last_name,
         email: customer.email,
         address: customer.address,
       });
@@ -54,15 +54,15 @@ const EditCustomerPage = () => {
         <input
           type="text"
           placeholder="First Name"
-          name="firstName"
-          value={customer.firstName}
+          name="first_name"
+          value={customer.first_name}
           onChange={changeHandler}
         />
         <input
           type="text"
           placeholder="Last Name"
-          name="lastName"
-          value={customer.lastName}
+          name="last_name"
+          value={customer.last_name}
           onChange={changeHandler}
         />
         <input
