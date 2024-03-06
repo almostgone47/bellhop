@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    await roomTypeModel.createRoomType(req.body);
+    await roomTypeModel.createRoomType(req.body.roomType);
     res.status(201).json({message: 'Room type created successfully.'});
   } catch (error) {
     res.status(500).json({error: 'Error creating room type.'});

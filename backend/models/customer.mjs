@@ -1,13 +1,18 @@
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const getAllCustomers = async () => {
-  const [rows] = await db.query(
-    `
-    SELECT * FROM customers
-    `,
-  );
-  return rows;
+const findOrCreateCustomer = async (first_name, last_name, email, address) => {
+  const existingCustomer = await getCustomerByEmail(email);
+  if (existingCustomer) return existingCustomer;
+  else {
+    const newCustomer = await createCustomer({
+      first_name,
+      last_name,
+      email,
+      address,
+    });
+    return newCustomer;
+  }
 };
 
 const getCustomerById = async (customerId) => {
@@ -21,14 +26,35 @@ const getCustomerById = async (customerId) => {
   return rows[0];
 };
 
+const getCustomerByEmail = async (email) => {
+  const [rows] = await db.query(
+    `
+    SELECT * FROM customers 
+    WHERE email = ?
+    `,
+    [email],
+  );
+  return rows[0];
+};
+
+const getAllCustomers = async () => {
+  const [rows] = await db.query(
+    `
+    SELECT * FROM customers
+    `,
+  );
+  return rows;
+};
+
 const createCustomer = async (customer) => {
-  await db.query(
+  const [rows] = await db.query(
     `
     INSERT INTO customers (first_name, last_name, email, address) 
 	  VALUES (?, ?, ?, ?)
     `,
-    [customer.firstName, customer.lastName, customer.email, customer.address],
+    [customer.first_name, customer.last_name, customer.email, customer.address],
   );
+  return rows;
 };
 
 const updateCustomer = async (customerId, customer) => {
@@ -39,8 +65,8 @@ const updateCustomer = async (customerId, customer) => {
     WHERE customer_id = ?
     `,
     [
-      customer.firstName,
-      customer.lastName,
+      customer.first_name,
+      customer.last_name,
       customer.email,
       customer.address,
       customerId,
@@ -86,9 +112,11 @@ const searchCustomerBookings = async (query) => {
 };
 
 export {
-  createCustomer,
-  getAllCustomers,
   getCustomerById,
+  getCustomerByEmail,
+  getAllCustomers,
+  createCustomer,
+  findOrCreateCustomer,
   updateCustomer,
   deleteCustomer,
   searchCustomerBookings,

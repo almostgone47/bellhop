@@ -1,11 +1,25 @@
 import express from 'express';
+
 import * as booking from '../models/booking.mjs';
+import {getRoomBookingByBookingId} from '../models/roomBooking.mjs';
 
 const router = express.Router();
 
+router.get('/:id', async (req, res) => {
+  try {
+    const isBooking = await booking.getBookingById(req.params.id);
+    if (isBooking) {
+      res.json(isBooking);
+    } else {
+      res.status(404).send({message: 'Booking not found'});
+    }
+  } catch (error) {
+    res.status(500).json({error: 'Failed to retrieve booking.'});
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
-    console.log('GET BOOKINGS');
     const bookings = await booking.getBookings();
     res.json(bookings);
   } catch (error) {
@@ -14,21 +28,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
-  try {
-    const data = await customer.getBookingById(req.params.id);
-    if (data) {
-      res.json(data);
-    } else {
-      res.status(404).send({message: 'Customer not found'});
-    }
-  } catch (error) {
-    res.status(500).json({error: 'Failed to retrieve booking.'});
-  }
-});
-
 router.post('/', async (req, res) => {
-  console.log('POST BOOKING');
   try {
     await booking.createBooking(req.body);
     res.json({message: 'Booking created'});
@@ -56,11 +56,18 @@ router.get('/:email', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const bookingData = {...req.body, id: req.params.id};
-    await booking.updateBooking(bookingData);
+    const bookingData = {
+      ...req.body,
+      booking_date: req.body.booking_date.slice(0, 10),
+      booking_id: req.params.id,
+    };
+
+    await booking.editBooking(bookingData);
+
     res.json({message: 'Booking updated.'});
   } catch (error) {
     console.log('Error updating booking:', error);
+
     res.status(400).json({
       error: 'Could not update booking.',
     });

@@ -26,7 +26,7 @@ router.get('/:id', async (req, res) => {
 });
 router.post('/', async (req, res) => {
   try {
-    await room.createRoom(req.body);
+    await room.createRoom(req.body.room);
     res.status(201).json({message: 'Room created successfully'});
   } catch (error) {
     res.status(500).json({message: error.message});
@@ -53,8 +53,8 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/available', async (req, res) => {
   try {
-    const {startDate, endDate} = req.query;
-    const availableRooms = await room.showAvailableRooms(startDate, endDate);
+    const {start_date, end_date} = req.query;
+    const availableRooms = await room.showAvailableRooms(start_date, end_date);
     res.json(availableRooms);
   } catch (error) {
     res.status(500).json({message: error.message});

@@ -26,7 +26,7 @@ CREATE TABLE room_types (
 CREATE TABLE rooms (
     room_id INT AUTO_INCREMENT PRIMARY KEY,
     room_type_id INT NOT NULL,
-	room_number INT NOT NULL UNIQUE,
+	room_number INT UNIQUE,
 	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id) ON DELETE CASCADE
 );
 
@@ -43,11 +43,11 @@ CREATE TABLE room_bookings (
     room_booking_id INT AUTO_INCREMENT PRIMARY KEY,
     room_type_id INT NOT NULL,
 	booking_id INT NOT NULL,
-    room_id INT NULL,-- <-- NULL because this will be updated to a specific room ID on arrival
+    room_id INT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     nights INT NOT NULL,
-    booked_price FLOAT NOT NULL,
+    booked_price FLOAT,
     FOREIGN KEY (room_id) REFERENCES rooms(room_id),
 	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id),
 	FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE

@@ -1,12 +1,30 @@
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const getRoomBookingsByBookingId = async (bookingId) => {
+const updateOrInsertRoomBookings = async (roomBooking) => {
+  if (roomBooking.room_booking_id) {
+    const existingBooking = await getRoomBookingById(roomBooking.roomBookingId);
+    if (existingBooking) {
+      await updateRoomBooking(roomBooking.roomBookingId, {
+        room_type_id,
+        start_date,
+        end_date,
+        nights,
+        booked_price,
+      });
+      return;
+    }
+  } else {
+    await createRoomBooking(roomBooking);
+  }
+};
+
+const getRoomBookingByBookingId = async (booking_id) => {
   const [rows] = await db.query(
-    `SELECT room_type_id AS roomTypeId, start_date AS startDate, end_date AS endDate  
+    `SELECT room_booking_id, room_type_id, start_date, end_date  
      FROM room_bookings 
 	   WHERE booking_id = ?`,
-    [bookingId],
+    [booking_id],
   );
   return rows;
 };
@@ -21,22 +39,22 @@ const getRoomBookingById = async (roomBookingId) => {
 };
 
 const createRoomBooking = async (roomBooking) => {
-  const {bookingId, roomTypeId, startDate, endDate, nights, bookedPrice} =
-    roomBooking;
-  await db.query(
-    `INSERT INTO room_bookings (booking_id, room_type_id, start_date, end_date, DATEDIFF(end_date, start_date), booked_price) 
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [bookingId, roomTypeId, startDate, endDate, nights, bookedPrice],
+  const {booking_id, room_type_id, start_date, end_date} = roomBooking;
+  const [rows] = await db.query(
+    `INSERT INTO room_bookings (booking_id, room_type_id, start_date, end_date, nights) 
+     VALUES (?, ?, ?, ?, DATEDIFF(?, ?))`,
+    [booking_id, room_type_id, start_date, end_date, end_date, start_date],
   );
+  return rows[0];
 };
 
 const updateRoomBooking = async (roomBookingId, updates) => {
-  const {roomTypeId, startDate, endDate, nights, bookedPrice} = updates;
+  const {room_type_id, start_date, end_date, nights, booked_price} = updates;
   await db.query(
     `UPDATE room_bookings 
      SET room_type_id = ?, start_date = ?, end_date = ?, nights = DATEDIFF(end_date, start_date), booked_price = ? 
      WHERE room_booking_id = ?`,
-    [roomTypeId, startDate, endDate, nights, bookedPrice, roomBookingId],
+    [room_type_id, start_date, end_date, nights, booked_price, roomBookingId],
   );
 };
 
@@ -50,7 +68,8 @@ const deleteRoomBookingById = async (roomBookingId) => {
 };
 
 export {
-  getRoomBookingsByBookingId,
+  updateOrInsertRoomBookings,
+  getRoomBookingByBookingId,
   getRoomBookingById,
   createRoomBooking,
   updateRoomBooking,
