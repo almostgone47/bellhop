@@ -8,7 +8,7 @@
     "dev": "nodemon index.mjs",
     "start": "node index.mjs",
     "seed": "mysql -u root bellhop < schema.sql",
-    "oseed": "mysql -u cs340_barro -h classmysql.engr.oregonstate.edu -p cs340_barroj < schema.sql"
+    "oseed": "mysql -u cs340_barroj -h classmysql.engr.oregonstate.edu -p cs340_barroj < schema.sql"
   },
   "author": "Jeremiah Barro",
   "license": "ISC",
