@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {FaPlusCircle} from 'react-icons/fa';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
 import RoomTypes from '../components/RoomTypes';
+import Row from '../components/Row';
 
 function RoomTypesPage() {
   const [roomTypes, setRoomTypes] = useState([]);
@@ -40,12 +41,14 @@ function RoomTypesPage() {
 
   return (
     <section className="content-area">
-      <h2>Room Types</h2>
-      <p id="addRoomTypeBtn">
+      <Row>
+        <h2>Room Types</h2>
         <Link to="/settings/createRoomType">
-          <FaPlusCircle /> Add Room Type
+          <button>
+            <FaPlusCircle /> Add Room Type
+          </button>
         </Link>
-      </p>
+      </Row>
       {roomTypes.length > 0 ? (
         <RoomTypes roomTypes={roomTypes} onDelete={onDeleteRoomType} />
       ) : (

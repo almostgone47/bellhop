@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {FaPlusCircle} from 'react-icons/fa';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
 import Rooms from '../components/Rooms';
+import Row from '../components/Row';
 
 function RoomsPage() {
-  const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
@@ -24,10 +24,6 @@ function RoomsPage() {
     }
   };
 
-  const gotToEditPage = (room) => {
-    navigate('/settings/updateRoom', {state: {room}});
-  };
-
   const onDeleteRoom = async (id) => {
     try {
       await axios.delete(`/rooms/${id}`);
@@ -41,12 +37,14 @@ function RoomsPage() {
 
   return (
     <section className="content-area">
-      <h2>Rooms</h2>
-      <p id="addRoomBtn">
+      <Row>
+        <h2>Rooms</h2>
         <Link to="/settings/createRoom">
-          <FaPlusCircle /> Add Room
+          <button>
+            <FaPlusCircle /> Add Room
+          </button>
         </Link>
-      </p>
+      </Row>
       {rooms.length > 0 ? (
         <Rooms rooms={rooms} onDelete={onDeleteRoom} />
       ) : (

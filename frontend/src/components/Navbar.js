@@ -28,7 +28,7 @@ function Navbar() {
       <div>
         <SearchBookingsInput />
         <NavLink to="/">Bookings</NavLink>
-        <NavLink to="/customers">Guests</NavLink>
+        <NavLink to="/customers">Customers</NavLink>
       </div>
       <RxAvatar
         style={{width: '40px', height: '40px', cursor: 'pointer'}}

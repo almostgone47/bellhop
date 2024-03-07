@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 import Customers from '../components/Customers';
+import Row from '../components/Row';
 
 function CustomersPage() {
   const navigate = useNavigate();
@@ -45,12 +46,14 @@ function CustomersPage() {
 
   return (
     <section className="content-area">
-      <h2>Customers</h2>
-      <p id="addCustomerBtn">
+      <Row>
+        <h2>Customers</h2>
         <Link to="/createCustomer">
-          <FaPlusCircle /> Add Customer
+          <button>
+            <FaPlusCircle /> Add Customer
+          </button>
         </Link>
-      </p>
+      </Row>
       {customers.length > 0 ? (
         <Customers
           customers={customers}

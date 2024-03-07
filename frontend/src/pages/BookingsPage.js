@@ -1,14 +1,13 @@
 import {React, useState, useEffect} from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
 
 import Bookings from '../components/Bookings';
 import CreateBookingModal from '../components/CreateBookingModal';
+import Row from '../components/Row';
 import {FaPlusCircle} from 'react-icons/fa';
 
 function BookingsPage() {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState([]);
 
@@ -49,11 +48,13 @@ function BookingsPage() {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
-      <h2>Bookings</h2>
-      <button id="addBookingBtn" onClick={toggleModal}>
-        <FaPlusCircle />
-        Add Booking
-      </button>
+      <Row>
+        <h2>Bookings</h2>
+        <button id="addBookingBtn" onClick={toggleModal}>
+          <FaPlusCircle />
+          Add Booking
+        </button>
+      </Row>
       {bookings.length > 0 ? (
         <Bookings bookings={bookings} onDelete={onDeleteBooking} />
       ) : (

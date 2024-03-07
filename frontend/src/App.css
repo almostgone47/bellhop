@@ -17,7 +17,6 @@ header {
 
 main {
   min-height: 84vh;
-  margin: 18px;
 }
 
 footer {
@@ -42,7 +41,7 @@ a {
 a:link,
 a {
   cursor: pointer;
-  color: var(--medium-green);
+  color: var(--dark-brown);
 }
 
 /*  ----- Navigation ----- Override text links for navigation only.  */
@@ -62,7 +61,7 @@ nav div {
 
 nav a {
   text-decoration: none;
-  color: var(--medium-green);
+  color: var(--dark-brown);
   padding: 12px 3%;
   font-weight: bold;
 }
@@ -70,7 +69,7 @@ nav a {
 nav.main-nav a {
   margin: 0 1%;
   border-top: none;
-  color: var(--medium-green);
+  color: var(--dark-brown);
 }
 
 nav.local {
@@ -152,12 +151,18 @@ tr {
 }
 
 button {
-  padding: 8px;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
   border-radius: 5px;
   background-color: var(--medium-green);
   color: var(--light-grey);
   font-weight: bold;
   font-size: 16px;
+}
+
+button > * {
+  padding: 0 6px 0 0;
 }
 
 ::placeholder {
@@ -205,11 +210,21 @@ input {
   max-width: 1200px;
   min-width: 66%;
   min-height: 70vh;
+  margin-top: 32px;
   margin-bottom: 12px;
 }
 
-.active {
+nav.main-nav .active {
   font-size: 18px;
+  color: var(--medium-green);
+  font-weight: bold;
+}
+
+.settingsSidebar .active {
+  font-size: 18px;
+  background: var(--dark-grey);
+  color: #fff;
+  border-radius: 5px;
 }
 
 figure {
@@ -278,8 +293,11 @@ figcaption {
 }
 
 .settingsSidebar a {
-  padding: 18px;
+  padding: 15px;
   text-decoration: none;
+  margin: 20px 20px 0 20px;
+  width: 175px;
+  overflow: hidden;
 }
 
 .settingsLayout {
@@ -288,6 +306,7 @@ figcaption {
 
 .settingsContent {
   width: 82%;
+  padding: 18px;
 }
 
 .modal {
@@ -305,6 +324,7 @@ figcaption {
 .row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
 }
 

@@ -4,7 +4,7 @@ import Customer from '../components/Customer';
 function Customers({customers, onDelete, onEdit}) {
   return (
     <table id="customers">
-      <caption>Add and Edit Rooms</caption>
+      <caption>Add and Edit Customes</caption>
       <thead>
         <tr>
           <th>Customer ID</th>
