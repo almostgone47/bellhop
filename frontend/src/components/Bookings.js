@@ -13,7 +13,7 @@ function Bookings({bookings, onDelete}) {
 
   return (
     <table id="bookings">
-      <caption>Add and Edit Bookings</caption>
+      <caption>Click on a booking to view and edit</caption>
       <thead>
         <tr>
           <th>Guest Name</th>
@@ -35,7 +35,7 @@ function Bookings({bookings, onDelete}) {
             <tr
               key={booking.booking_id}
               onClick={() => openModal(booking.booking_id)}
-              style={{cursor: 'pointer'}}
+              className="high-light-row"
             >
               <td>{booking.guest_name}</td>
               <td>{booking.room_numbers}</td>
