@@ -5,6 +5,7 @@ import {findOrCreateCustomer, updateCustomer} from './customer.mjs';
 import {
   getRoomBookingByBookingId,
   updateOrInsertRoomBookings,
+  createRoomBooking,
 } from './roomBooking.mjs';
 
 const getBookings = async () => {
@@ -119,13 +120,10 @@ const createBooking = async (booking) => {
   const bookingId = savedBooking.insertId;
 
   for (const roomBooking of booking.room_bookings) {
-    const [price] = await db.query(
-      `
-      SELECT price FROM room_types 
-      WHERE room_type_id = ?
-       `,
-      [roomBooking.room_type_id],
-    );
+    createRoomBooking({
+      ...roomBooking,
+      booking_id: bookingId,
+    });
   }
 
   return {

@@ -79,6 +79,11 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
     }
   };
 
+  const deleteBooking = (bookingId) => {
+    onDelete(bookingId);
+    setIsModalOpen(false);
+  };
+
   return (
     <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       {booking ? (
@@ -217,7 +222,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
             </div>
           ))}
           <Row>
-            <button onClick={() => onDelete(bookingId)}>
+            <button onClick={() => deleteBooking(bookingId)}>
               <FaRegTrashAlt />
               Cancel Booking
             </button>
