@@ -265,12 +265,12 @@ figcaption {
   margin: 0;
   color: #000;
   position: absolute;
-  min-width: 225px;
   list-style: none;
-  right: 0px;
-  top: 65px;
+  right: 12px;
+  top: 58px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
   z-index: 1;
+  border-radius: 5px;
 }
 
 #searchDropDown {
@@ -320,7 +320,7 @@ figcaption {
   background: #fff;
   z-index: 1;
   position: absolute;
-  top: 100px;
+  top: 35px;
   right: 25%;
   width: 700px;
   border-radius: 5px;
