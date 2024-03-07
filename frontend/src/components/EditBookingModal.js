@@ -204,7 +204,9 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
                     name="start_date"
                     onChange={(e) => handleRBChange(e, index)}
                     value={
-                      booking.start_date && booking.start_date.slice(0, 10)
+                      room_booking.start_date
+                        ? room_booking.start_date.slice(0, 10)
+                        : ''
                     }
                   />
                 </FormItem>
@@ -214,7 +216,11 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
                     type="date"
                     name="end_date"
                     onChange={(e) => handleRBChange(e, index)}
-                    value={booking.end_date && booking.end_date.slice(0, 10)}
+                    value={
+                      room_booking.end_date
+                        ? room_booking.end_date.slice(0, 10)
+                        : ''
+                    }
                   />
                 </FormItem>
               </Row>
