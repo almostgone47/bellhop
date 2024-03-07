@@ -223,6 +223,8 @@ nav.main-nav .active {
   font-size: 18px;
   color: var(--medium-green);
   font-weight: bold;
+  background-color: #f1f3f3;
+  border-radius: 5px;
 }
 
 .settingsSidebar .active {

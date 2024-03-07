@@ -5,7 +5,7 @@ import RoomType from './RoomType';
 function RoomTypes({roomTypes, onDelete, onEdit}) {
   return (
     <table id="roomTypes">
-      <caption>Room Types Overview</caption>
+      <caption>Add and Edit Room Types</caption>
       <thead>
         <tr>
           <th>ID</th>
