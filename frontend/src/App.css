@@ -366,12 +366,12 @@ figcaption {
   color: #fff;
   border-radius: 3px;
   padding: 5px 10px;
-  min-width: 140px;
+  min-width: 105px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
   color: var(--light-grey);
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .unpaid {
@@ -379,12 +379,12 @@ figcaption {
   color: #fff;
   border-radius: 3px;
   padding: 5px 10px;
-  min-width: 140px;
+  min-width: 105px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
   color: var(--light-grey);
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .paid {
@@ -392,12 +392,12 @@ figcaption {
   color: #fff;
   border-radius: 3px;
   padding: 5px 10px;
-  min-width: 140px;
+  min-width: 105px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
   color: var(--light-grey);
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .checkedout {
@@ -405,9 +405,9 @@ figcaption {
   color: var(--light-grey);
   border-radius: 3px;
   padding: 5px 10px;
-  min-width: 140px;
+  min-width: 105px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 12px;
 }
