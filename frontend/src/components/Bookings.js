@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 
-import BookingModal from './EditBookingModal';
+import EditBookingModal from './EditBookingModal';
+import {useBooking} from '../hooks/BookingModalHook';
 
 function Bookings({bookings, onDelete}) {
-  const [selectedBookingId, setSelectedBookingId] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {setBookingId, setIsModalOpen} = useBooking();
 
   const openModal = (bookingId) => {
-    setSelectedBookingId(bookingId);
+    setBookingId(bookingId);
     setIsModalOpen(true);
   };
 
@@ -37,12 +37,7 @@ function Bookings({bookings, onDelete}) {
       </thead>
       <tbody>
         <>
-          <BookingModal
-            bookingId={selectedBookingId}
-            onDelete={onDelete}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-          />
+          <EditBookingModal onDelete={onDelete} />
           {bookings.map((booking, i) => (
             <tr
               key={booking.booking_id}

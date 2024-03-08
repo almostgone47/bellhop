@@ -274,7 +274,7 @@ figcaption {
 }
 
 #searchDropDown {
-  padding: 10px 12px;
+  padding: 0;
   background: #fff;
   border: 1px solid #999;
   margin: 0;
@@ -287,6 +287,15 @@ figcaption {
   min-width: 225px;
   top: 54px;
   left: 214px;
+}
+
+#searchDropDown li {
+  padding: 14px;
+  border-bottom: 1px solid #ccc;
+}
+
+#searchDropDown li:hover {
+  background-color: #eee;
 }
 
 .settingsSidebar {
@@ -358,7 +367,7 @@ figcaption {
 }
 
 .arriving {
-  background: green;
+  background: #46a746;
   color: #fff;
   border-radius: 3px;
   padding: 5px 10px;
@@ -371,7 +380,7 @@ figcaption {
 }
 
 .unpaid {
-  background: darkred;
+  background: #cd5656;
   color: #fff;
   border-radius: 3px;
   padding: 5px 10px;

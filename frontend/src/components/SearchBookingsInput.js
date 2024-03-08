@@ -1,12 +1,18 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import _ from 'lodash';
 
+import {useBooking} from '../hooks/BookingModalHook';
+
 const SearchBookingsInput = () => {
-  const redirect = useNavigate();
   const [searchBookings, setSearchBookings] = useState('');
-  const [searchResults, setSearchResults] = useState([]); // State to store search results
+  const [searchResults, setSearchResults] = useState([]);
+  const {setBookingId, setIsModalOpen} = useBooking();
+
+  const openModal = (bookingId) => {
+    setBookingId(bookingId);
+    setIsModalOpen(true);
+  };
 
   const debouncedOnSearch = useCallback(
     _.debounce((query) => {
@@ -18,6 +24,9 @@ const SearchBookingsInput = () => {
   useEffect(() => {
     if (searchBookings.length >= 3) {
       debouncedOnSearch(searchBookings);
+    }
+    if (searchBookings === '') {
+      setSearchResults([]);
     }
   }, [searchBookings, debouncedOnSearch]);
 
@@ -34,7 +43,8 @@ const SearchBookingsInput = () => {
   };
 
   const handleSelectResult = (selectedResult) => {
-    redirect('/updateBooking');
+    console.log('selectedResult: ', selectedResult);
+    openModal(selectedResult.booking_id);
     setSearchResults([]);
   };
 

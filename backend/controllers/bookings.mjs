@@ -151,16 +151,17 @@ router.put('/:id', async (req, res) => {
       booking_id: req.params.id,
     };
 
-    const customer = await findOrCreateCustomer(bookingData);
+    const customer = await getCustomerByEmail(bookingData.email);
+    const [first_name, last_name] = bookingData.guest_name.split(' ');
 
     await updateCustomer(customer.customer_id, {
-      first_name: customer.first_name,
-      last_name: customer.last_name,
+      first_name: first_name,
+      last_name: last_name,
       email: bookingData.email,
       address: bookingData.address,
     });
 
-    const updatedBooking = await updateBooking(bookingData);
+    await updateBooking(bookingData);
 
     for (const room_booking of bookingData.room_bookings) {
       const roomPrice = await getRoomTypePrice(room_booking.room_type_id);

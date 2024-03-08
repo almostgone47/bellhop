@@ -7,9 +7,11 @@ import {useNavigate} from 'react-router-dom';
 import Modal from './Modal';
 import Row from './Row';
 import FormItem from './FormItem';
+import {useBooking} from '../hooks/BookingModalHook';
 
-function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
+function EditBookingModal({onDelete}) {
   const navigate = useNavigate();
+  const {bookingId, isModalOpen, setIsModalOpen} = useBooking();
   const [booking, setBooking] = useState({
     guest_name: '',
     status: '',
@@ -80,7 +82,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
     }
   };
 
-  const deleteBooking = (bookingId) => {
+  const deleteBooking = () => {
     onDelete(bookingId);
     setIsModalOpen(false);
   };
@@ -119,7 +121,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
                 type="email"
                 name="email"
                 value={booking.email}
-                onChange={handleChange}
+                disabled
               />
             </FormItem>
             <FormItem>
@@ -232,7 +234,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
           ))}
           <Row>
             <button
-              onClick={() => deleteBooking(bookingId)}
+              onClick={() => deleteBooking()}
               style={{
                 width: '222px',
                 display: 'flex',

@@ -13,7 +13,7 @@ function BookingsPage() {
 
   useEffect(() => {
     loadBookings();
-  }, [bookings, isModalOpen]);
+  }, [isModalOpen]);
 
   const loadBookings = async () => {
     try {
