@@ -274,23 +274,19 @@ figcaption {
 }
 
 #searchDropDown {
-  padding: 0px;
+  padding: 10px 12px;
   background: #fff;
   border: 1px solid #999;
   margin: 0;
   color: #000;
   position: absolute;
-  min-width: 225px;
   list-style: none;
-  left: 216px;
-  top: 54px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
   z-index: 1;
-}
-
-#searchDropDown li {
-  padding: 8px;
-  border-bottom: 1px solid #777;
+  border-radius: 5px;
+  min-width: 225px;
+  top: 54px;
+  left: 214px;
 }
 
 .settingsSidebar {

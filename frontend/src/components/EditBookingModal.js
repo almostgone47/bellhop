@@ -26,6 +26,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
     if (isModalOpen && bookingId) {
       getBooking();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalOpen, bookingId]);
 
   const getBooking = async () => {
