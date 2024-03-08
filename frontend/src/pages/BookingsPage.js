@@ -18,7 +18,6 @@ function BookingsPage() {
   const loadBookings = async () => {
     try {
       const res = await axios.get('/bookings');
-      console.log('data::', res.data);
       setBookings(res.data);
     } catch ({error}) {
       console.log('Failed to load bookings:', error);

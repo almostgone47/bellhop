@@ -68,7 +68,7 @@ const EditBookingPage = () => {
       toast.error(`Failed to update booking: ${error.message}`);
     }
   };
-  console.log('booking.roomBookings?.map(:  ', booking);
+
   return (
     <section className="content-area">
       <h2>Edit Booking</h2>

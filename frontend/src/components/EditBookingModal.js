@@ -161,7 +161,6 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
           </Row>
           <h3>Rooms Booked</h3>
           <hr />
-          {console.log('ROOMOOOKINGS: ', booking)}
           {booking.room_bookings.map((room_booking, index) => (
             <div key={index}>
               <h4>Room {index + 1}</h4>

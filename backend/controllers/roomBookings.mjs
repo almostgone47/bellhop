@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const data = await roomBooking.getRoomBookingsByBookingId(req.params.id);
-    console.log('res data: ', data);
     if (data) {
       res.json(data);
     } else {

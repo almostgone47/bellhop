@@ -26,7 +26,6 @@ const SearchBookingsInput = () => {
       const res = await axios.get('/customers/search', {
         params: {query},
       });
-      console.log('res.data: ', res);
       setSearchResults(res.data);
     } catch (error) {
       console.log('Error:', error);
@@ -35,7 +34,6 @@ const SearchBookingsInput = () => {
   };
 
   const handleSelectResult = (selectedResult) => {
-    console.log('handleSelectResult: ', selectedResult);
     redirect('/updateBooking');
     setSearchResults([]);
   };

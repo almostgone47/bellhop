@@ -49,7 +49,6 @@ const AddBookingPage = () => {
 
   const addBooking = async () => {
     const res = await axios.post('/bookings', {booking});
-    console.log('res: ', res);
     if (res.status === 200) {
       setBooking({
         customerId: '',

@@ -57,7 +57,6 @@ const updateRoomType = async (id, roomType) => {
 };
 
 const deleteRoomTypeById = async (id) => {
-  console.log('DELETE: ', id);
   const [result] = await db.query(
     `
     DELETE FROM room_types
