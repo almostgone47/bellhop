@@ -21,6 +21,17 @@ const getRoomTypeById = async (id) => {
   return rows.length ? rows[0] : null;
 };
 
+const getRoomTypePrice = async (id) => {
+  const [[row]] = await db.query(
+    `
+    SELECT price FROM room_types 
+    WHERE room_type_id = ?;
+   `,
+    [id],
+  );
+  return row.price;
+};
+
 const createRoomType = async (roomType) => {
   const {name, price, description} = roomType;
   const [rows] = await db.query(
@@ -61,6 +72,7 @@ export {
   createRoomType,
   getAllRoomTypes,
   getRoomTypeById,
+  getRoomTypePrice,
   updateRoomType,
   deleteRoomTypeById,
 };

@@ -161,6 +161,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
           </Row>
           <h3>Rooms Booked</h3>
           <hr />
+          {console.log('ROOMOOOKINGS: ', booking)}
           {booking.room_bookings.map((room_booking, index) => (
             <div key={index}>
               <h4>Room {index + 1}</h4>
@@ -168,6 +169,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
                 <FormItem>
                   <label>Room Type:</label>
                   <select
+                    style={{width: '222px'}}
                     name="room_type_id"
                     value={room_booking.room_type_id}
                     onChange={(e) => handleRBChange(e, index)}
@@ -179,6 +181,7 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
                 <FormItem>
                   <label>Room Number:</label>
                   <select
+                    style={{width: '222px'}}
                     name="room_numbers"
                     value={room_booking.room_number}
                     onChange={(e) => handleRBChange(e, index)}
@@ -228,11 +231,25 @@ function EditBookingModal({bookingId, onDelete, isModalOpen, setIsModalOpen}) {
             </div>
           ))}
           <Row>
-            <button onClick={() => deleteBooking(bookingId)}>
+            <button
+              onClick={() => deleteBooking(bookingId)}
+              style={{
+                width: '222px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <FaRegTrashAlt />
               Cancel Booking
             </button>
-            <button onClick={() => onEditBooking(booking)}>
+            <button
+              onClick={() => onEditBooking(booking)}
+              style={{
+                width: '222px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <FaEdit />
               Save Changes
             </button>

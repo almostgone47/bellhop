@@ -360,3 +360,54 @@ figcaption {
   display: flex;
   flex-direction: column;
 }
+
+.arriving {
+  background: green;
+  color: #fff;
+  border-radius: 3px;
+  padding: 5px 10px;
+  min-width: 140px;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  color: var(--light-grey);
+  font-size: 15px;
+}
+
+.unpaid {
+  background: darkred;
+  color: #fff;
+  border-radius: 3px;
+  padding: 5px 10px;
+  min-width: 140px;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  color: var(--light-grey);
+  font-size: 15px;
+}
+
+.paid {
+  background: var(--medium-green);
+  color: #fff;
+  border-radius: 3px;
+  padding: 5px 10px;
+  min-width: 140px;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  color: var(--light-grey);
+  font-size: 15px;
+}
+
+.checkedout {
+  background: var(--medium-grey);
+  color: var(--light-grey);
+  border-radius: 3px;
+  padding: 5px 10px;
+  min-width: 140px;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+}

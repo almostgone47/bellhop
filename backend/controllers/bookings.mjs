@@ -1,15 +1,83 @@
 import express from 'express';
 
-import * as booking from '../models/booking.mjs';
-import {getRoomBookingByBookingId} from '../models/roomBooking.mjs';
+import {
+  getBookingById,
+  getBookings,
+  createBooking,
+  getBookingByEmail,
+  updateBooking,
+  deleteBookingById,
+} from '../models/booking.mjs';
+import {
+  getRoomBookingById,
+  getRoomBookingByBookingId,
+  createRoomBooking,
+  updateRoomBooking,
+} from '../models/roomBooking.mjs';
+import {getRoomTypePrice} from '../models/roomType.mjs';
+import {
+  getCustomerByEmail,
+  createCustomer,
+  updateCustomer,
+} from '../models/customer.mjs';
 
 const router = express.Router();
 
+const findOrCreateCustomer = async (bookingData) => {
+  let [first_name, last_name] = bookingData.guest_name.split(' ');
+  last_name = last_name ? last_name : 'None Given';
+
+  const existingCustomer = await getCustomerByEmail(bookingData.email);
+
+  if (existingCustomer) {
+    return existingCustomer;
+  } else {
+    const newCustomer = await createCustomer({
+      first_name,
+      last_name,
+      email: bookingData.email,
+      address: bookingData.address,
+    });
+
+    return newCustomer;
+  }
+};
+
+const updateOrInsertRoomBookings = async (roomBooking) => {
+  if (roomBooking.room_booking_id) {
+    const existingBooking = await getRoomBookingById(
+      roomBooking.room_booking_id,
+    );
+    if (existingBooking) {
+      const updatedBooking = await updateRoomBooking(
+        roomBooking.room_booking_id,
+        {
+          room_type_id: roomBooking.room_type_id,
+          start_date: roomBooking.start_date,
+          end_date: roomBooking.end_date,
+          booked_price: roomBooking.booked_price,
+        },
+      );
+      return updatedBooking;
+    }
+  } else {
+    await createRoomBooking(roomBooking);
+  }
+};
+
 router.get('/:id', async (req, res) => {
   try {
-    const isBooking = await booking.getBookingById(req.params.id);
+    const isBooking = await getBookingById(req.params.id);
+
     if (isBooking) {
-      res.json(isBooking);
+      const roomBookings = await getRoomBookingByBookingId(req.params.id);
+
+      const bookingById = {
+        ...isBooking,
+        room_bookings: roomBookings,
+      };
+
+      res.json(bookingById);
     } else {
       res.status(404).send({message: 'Booking not found'});
     }
@@ -20,7 +88,7 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const bookings = await booking.getBookings();
+    const bookings = await getBookings();
     res.json(bookings);
   } catch (error) {
     console.error('Error fetching bookings:', error);
@@ -30,7 +98,28 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    await booking.createBooking(req.body);
+    const customer = await findOrCreateCustomer(req.body);
+
+    const newBookingData = {
+      ...req.body,
+      customer_id: customer.insertId || customer.customer_id,
+    };
+
+    const savedBooking = await createBooking(newBookingData);
+
+    for (const room_booking of newBookingData.room_bookings) {
+      const roomPrice = await getRoomTypePrice(room_booking.room_type_id);
+
+      const roomBooking = {
+        ...newBookingData,
+        ...room_booking,
+        ...customer,
+        booked_price: roomPrice,
+        booking_id: savedBooking.insertId,
+      };
+      await createRoomBooking(roomBooking);
+    }
+
     res.json({message: 'Booking created'});
   } catch (error) {
     console.error('Error creating booking:', error);
@@ -42,7 +131,7 @@ router.post('/', async (req, res) => {
 
 router.get('/:email', async (req, res) => {
   try {
-    const booking = await booking.getBookingByEmail(req.params.email);
+    const booking = await getBookingByEmail(req.params.email);
     if (booking) {
       res.json(booking);
     } else {
@@ -62,7 +151,29 @@ router.put('/:id', async (req, res) => {
       booking_id: req.params.id,
     };
 
-    await booking.editBooking(bookingData);
+    const customer = await findOrCreateCustomer(bookingData);
+
+    await updateCustomer(customer.customer_id, {
+      first_name: customer.first_name,
+      last_name: customer.last_name,
+      email: bookingData.email,
+      address: bookingData.address,
+    });
+
+    const updatedBooking = await updateBooking(bookingData);
+
+    for (const room_booking of bookingData.room_bookings) {
+      const roomPrice = await getRoomTypePrice(room_booking.room_type_id);
+
+      const roomBooking = {
+        ...bookingData,
+        ...room_booking,
+        ...customer,
+        booked_price: roomPrice,
+      };
+
+      await updateOrInsertRoomBookings(roomBooking);
+    }
 
     res.json({message: 'Booking updated.'});
   } catch (error) {
@@ -76,7 +187,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedCount = await booking.deleteBookingById(req.params.id);
+    const deletedCount = await deleteBookingById(req.params.id);
     if (deletedCount === 1) {
       res.status(200).send({
         Success: 'Booking deleted',

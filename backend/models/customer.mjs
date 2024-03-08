@@ -1,20 +1,6 @@
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const findOrCreateCustomer = async (first_name, last_name, email, address) => {
-  const existingCustomer = await getCustomerByEmail(email);
-  if (existingCustomer) return existingCustomer;
-  else {
-    const newCustomer = await createCustomer({
-      first_name,
-      last_name,
-      email,
-      address,
-    });
-    return newCustomer;
-  }
-};
-
 const getCustomerById = async (customerId) => {
   const [rows] = await db.query(
     `
@@ -116,7 +102,6 @@ export {
   getCustomerByEmail,
   getAllCustomers,
   createCustomer,
-  findOrCreateCustomer,
   updateCustomer,
   deleteCustomer,
   searchCustomerBookings,

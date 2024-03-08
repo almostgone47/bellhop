@@ -164,6 +164,7 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                 <FormItem>
                   <label>Room Type:</label>
                   <select
+                    style={{width: '222px'}}
                     name="room_type_id"
                     value={room_booking.room_type_id}
                     onChange={(e) => handleRBChange(e, index)}
@@ -175,7 +176,8 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                 <FormItem>
                   <label>Room Number:</label>
                   <select
-                    name="room_numbers"
+                    style={{width: '222px'}}
+                    name="room_number"
                     value={room_booking.room_number}
                     onChange={(e) => handleRBChange(e, index)}
                   >
@@ -224,11 +226,25 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
             </div>
           ))}
           <Row>
-            <button onClick={() => onCancel()}>
+            <button
+              onClick={() => onCancel()}
+              style={{
+                width: '222px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <FaRegTrashAlt />
               Cancel Booking
             </button>
-            <button onClick={() => onSave(booking)}>
+            <button
+              onClick={() => onSave(booking)}
+              style={{
+                width: '222px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <FaEdit />
               Save Changes
             </button>

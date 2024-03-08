@@ -11,6 +11,18 @@ function Bookings({bookings, onDelete}) {
     setIsModalOpen(true);
   };
 
+  const getBadge = (status) => {
+    if (status === 'arriving') {
+      return 'arriving';
+    } else if (status === 'checkedin unpaid') {
+      return 'unpaid';
+    } else if (status === 'checkedin paid') {
+      return 'paid';
+    } else {
+      return 'checkedout';
+    }
+  };
+
   return (
     <table id="bookings">
       <caption>Click on a booking to view and edit</caption>
@@ -45,7 +57,11 @@ function Bookings({bookings, onDelete}) {
                   dateStyle: 'long',
                 })}
               </td>
-              <td>{booking.status}</td>
+              <td style={{width: '165px'}}>
+                <span className={getBadge(booking.status)}>
+                  {booking.status}
+                </span>
+              </td>
             </tr>
           ))}
         </>

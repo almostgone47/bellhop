@@ -1,24 +1,6 @@
 import 'dotenv/config';
 import db from '../db.mjs';
 
-const updateOrInsertRoomBookings = async (roomBooking) => {
-  if (roomBooking.room_booking_id) {
-    const existingBooking = await getRoomBookingById(roomBooking.roomBookingId);
-    if (existingBooking) {
-      await updateRoomBooking(roomBooking.roomBookingId, {
-        room_type_id,
-        start_date,
-        end_date,
-        nights,
-        booked_price,
-      });
-      return;
-    }
-  } else {
-    await createRoomBooking(roomBooking);
-  }
-};
-
 const getRoomBookingByBookingId = async (booking_id) => {
   const [rows] = await db.query(
     `SELECT room_booking_id, room_type_id, start_date, end_date  
@@ -49,13 +31,24 @@ const createRoomBooking = async (roomBooking) => {
 };
 
 const updateRoomBooking = async (roomBookingId, updates) => {
-  const {room_type_id, start_date, end_date, nights, booked_price} = updates;
-  await db.query(
+  const {room_type_id, start_date, end_date, booked_price} = updates;
+  const startDate = start_date.slice(0, 10);
+  const endDate = end_date.slice(0, 10);
+  const [rows] = await db.query(
     `UPDATE room_bookings 
-     SET room_type_id = ?, start_date = ?, end_date = ?, nights = DATEDIFF(end_date, start_date), booked_price = ? 
+     SET room_type_id = ?, start_date = ?, end_date = ?, nights = DATEDIFF(?, ?), booked_price = ? 
      WHERE room_booking_id = ?`,
-    [room_type_id, start_date, end_date, nights, booked_price, roomBookingId],
+    [
+      room_type_id,
+      startDate,
+      endDate,
+      endDate,
+      startDate,
+      booked_price,
+      roomBookingId,
+    ],
   );
+  return rows;
 };
 
 const deleteRoomBookingById = async (roomBookingId) => {
@@ -68,7 +61,6 @@ const deleteRoomBookingById = async (roomBookingId) => {
 };
 
 export {
-  updateOrInsertRoomBookings,
   getRoomBookingByBookingId,
   getRoomBookingById,
   createRoomBooking,

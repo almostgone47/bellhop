@@ -1,13 +1,6 @@
 import 'dotenv/config';
 import db from '../db.mjs';
 
-import {findOrCreateCustomer, updateCustomer} from './customer.mjs';
-import {
-  getRoomBookingByBookingId,
-  updateOrInsertRoomBookings,
-  createRoomBooking,
-} from './roomBooking.mjs';
-
 const getBookings = async () => {
   const [rows] = await db.query(
     `
@@ -26,11 +19,11 @@ const getBookings = async () => {
     ORDER BY bookings.booking_id DESC;
      `,
   );
+
   return rows;
 };
 
 const getBookingById = async (id) => {
-  console.log('Bookings Model1: ', id);
   const [rows] = await db.query(
     `
     SELECT
@@ -52,106 +45,37 @@ const getBookingById = async (id) => {
     [id],
   );
 
-  const roomBookings = await getRoomBookingByBookingId(id);
-
-  return {
-    ...rows[0],
-    room_bookings: roomBookings,
-  };
+  return rows[0];
 };
 
-async function editBooking(booking) {
-  const [first_name, last_name] = booking.guest_name.split(' ');
-  const lastName = last_name ? last_name : 'None Given';
-  const customer = await findOrCreateCustomer(
-    first_name,
-    lastName,
-    booking.email,
-    booking.address,
-  );
-
-  await updateCustomer(customer.customer_id, {
-    first_name: first_name,
-    last_name: last_name,
-    email: booking.email,
-    address: booking.address,
-  });
-
-  const updatedBooking = await updateBooking({
-    ...booking,
-    ...customer,
-  });
-
-  for (const room_booking of booking.room_bookings) {
-    const bookingId =
-      booking.booking_id && booking.booking_id != 'undefined'
-        ? booking.booking_id
-        : '';
-
-    const roomBooking = {
-      ...updatedBooking,
-      ...room_booking,
-      ...customer,
-    };
-
-    await updateOrInsertRoomBookings(roomBooking);
-  }
-}
-
 const createBooking = async (booking) => {
-  const [first_name, last_name] = booking.guest_name.split(' ');
-  const lastName = last_name ? last_name : 'None Given';
-  const customer = await findOrCreateCustomer(
-    first_name,
-    lastName,
-    booking.email,
-    booking.address,
-  );
-
-  const [savedBooking] = await db.query(
+  const [rows] = await db.query(
     `
     INSERT INTO bookings (customer_id) 
     VALUES (?)
     `,
-    [customer.insertId || customer.customer_id],
+    [booking.customer_id],
   );
 
-  console.log('bookingId: ', savedBooking);
-  const bookingId = savedBooking.insertId;
-
-  for (const roomBooking of booking.room_bookings) {
-    createRoomBooking({
-      ...roomBooking,
-      booking_id: bookingId,
-    });
-  }
-
-  return {
-    ...booking,
-    booking_id: bookingId,
-  };
+  return rows;
 };
 
 const updateBooking = async (booking) => {
-  if (booking.booking_id && booking.booking_id != 'undefined') {
-    const existingBooking = await getBookingById(booking.booking_id);
-    if (existingBooking) {
-      const [rows] = await db.query(
-        `
+  const [rows] = await db.query(
+    `
         UPDATE bookings 
         SET total_paid = ?, status = ?, date_created = ?
         WHERE booking_id = ?
         `,
-        [
-          booking.total_paid,
-          booking.status,
-          booking.booking_date,
-          booking.booking_id,
-        ],
-      );
-      return rows;
-    }
-  }
+    [
+      booking.total_paid,
+      booking.status,
+      booking.booking_date,
+      booking.booking_id,
+    ],
+  );
+
+  return rows;
 };
 
 const getBookingByEmail = async (email) => {
@@ -165,6 +89,7 @@ const getBookingByEmail = async (email) => {
      `,
     [email],
   );
+
   return rows[0];
 };
 
@@ -184,7 +109,6 @@ export {
   getBookingById,
   updateBooking,
   createBooking,
-  editBooking,
   getBookingByEmail,
   deleteBookingById,
 };
