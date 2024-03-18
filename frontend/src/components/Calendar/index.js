@@ -119,9 +119,9 @@ const Calendar = ({bookings, onNewBooking}) => {
                 onClick={() => openModal(booking.bookingId)}
                 className={'booking ' + booking.status}
                 style={{
-                  top: `${46 + (Number(booking.room_id) - 1) * 51}px`,
-                  left: `${80 + booking.start * 51}px`,
-                  width: `${booking.span * 51}px`,
+                  top: `${46 + (Number(booking.room_id) - 1) * 50}px`,
+                  left: `${80 + booking.start * 50}px`,
+                  width: `${booking.span * 50}px`,
                 }}
               >
                 {booking.guest_name}
