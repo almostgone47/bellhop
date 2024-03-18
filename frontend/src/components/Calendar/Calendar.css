@@ -85,7 +85,7 @@
 
 .days-of-week {
   display: flex;
-  width: calc(100% + 80px);
+  width: calc(100% + 198px);
   color: var(--dark-grey);
 }
 
