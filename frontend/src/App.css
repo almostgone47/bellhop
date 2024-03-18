@@ -455,6 +455,6 @@ figcaption {
 
 .date-booked {
   width: 225px;
-  padding: 6px 0 18px;
+  padding: 6px 8px 18px;
   color: var(--medium-green);
 }

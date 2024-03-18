@@ -3,8 +3,7 @@ import db from '../db.mjs';
 
 const getRoomBookingByBookingId = async (booking_id) => {
   const [rows] = await db.query(
-    `SELECT room_booking_id, room_type_id, room_id, start_date, end_date  
-     FROM room_bookings 
+    `SELECT * FROM room_bookings 
 	   WHERE booking_id = ?`,
     [booking_id],
   );

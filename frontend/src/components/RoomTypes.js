@@ -9,7 +9,7 @@ function RoomTypes({roomTypes, onDelete, onEdit}) {
       <thead>
         <tr>
           <th>ID</th>
-          <th>Room Type</th>
+          <th>Name</th>
           <th>Description</th>
           <th>Price</th>
           <th>Actions</th>

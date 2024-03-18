@@ -26,7 +26,7 @@ function CustomersPage() {
   };
 
   const onEditCustomer = (customer) => {
-    navigate('/updateCustomer', {state: {customer}});
+    navigate('/settings/updateCustomer', {state: {customer}});
   };
 
   const onDeleteCustomer = async (id) => {

@@ -3,11 +3,13 @@ import {Link} from 'react-router-dom';
 import {FaPlusCircle} from 'react-icons/fa';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import {useNavigate} from 'react-router-dom';
 
 import RoomTypes from '../components/RoomTypes';
 import Row from '../components/Row';
 
 function RoomTypesPage() {
+  const navigate = useNavigate();
   const [roomTypes, setRoomTypes] = useState([]);
 
   useEffect(() => {
@@ -22,6 +24,10 @@ function RoomTypesPage() {
       console.error('Failed to load room types:', error);
       toast.error('Failed to load room types');
     }
+  };
+
+  const onEditRoomType = (roomType) => {
+    navigate('/settings/updateRoomType', {state: {roomType}});
   };
 
   const onDeleteRoomType = async (id) => {
@@ -50,7 +56,11 @@ function RoomTypesPage() {
         </Link>
       </Row>
       {roomTypes.length > 0 ? (
-        <RoomTypes roomTypes={roomTypes} onDelete={onDeleteRoomType} />
+        <RoomTypes
+          roomTypes={roomTypes}
+          onDelete={onDeleteRoomType}
+          onEdit={onEditRoomType}
+        />
       ) : (
         <p>No room types available.</p>
       )}

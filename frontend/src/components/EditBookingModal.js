@@ -21,7 +21,14 @@ function EditBookingModal({onDelete}) {
     total_paid: '',
     booking_date: '',
     room_bookings: [
-      {start_date: '', end_date: '', room_type_id: 1, room_number: ''},
+      {
+        start_date: '',
+        end_date: '',
+        room_type_id: 1,
+        room_number: '',
+        booked_price: '',
+        nights: 0,
+      },
     ],
   });
 
@@ -238,6 +245,21 @@ function EditBookingModal({onDelete}) {
                         : ''
                     }
                   />
+                </FormItem>
+              </Row>
+              <Row>
+                <FormItem>
+                  <label>Nights Booked:</label>
+                  <div className="date-booked">{room_booking.nights}</div>
+                </FormItem>
+                <FormItem>
+                  <label>Booked Price:</label>
+                  <div className="date-booked">
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                    }).format(room_booking.booked_price)}
+                  </div>
                 </FormItem>
               </Row>
               <hr />

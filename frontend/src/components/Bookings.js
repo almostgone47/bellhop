@@ -44,7 +44,12 @@ function Bookings({bookings, onDelete}) {
             >
               <td>{booking.guest_name}</td>
               <td>{booking.room_numbers}</td>
-              <td>{booking.total_paid}</td>
+              <td>
+                {new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                }).format(booking.total_paid)}
+              </td>
               <td>
                 {new Date(booking.arrival_date).toLocaleString('en-US', {
                   dateStyle: 'long',

@@ -45,14 +45,16 @@ const createRoomType = async (roomType) => {
 };
 
 const updateRoomType = async (id, roomType) => {
-  const {name, price} = roomType;
+  const {name, price, description} = roomType;
+  console.log('rname, price, description ', name, price, description);
   const [rows] = await db.query(
     `
-    UPDATE room_types SET name = ?, price = ? 
+    UPDATE room_types SET name = ?, price = ?, description = ? 
 	  WHERE room_type_id = ?;
     `,
-    [name, price, id],
+    [name, price, description, id],
   );
+  console.log('rows ', rows);
   return rows[0];
 };
 

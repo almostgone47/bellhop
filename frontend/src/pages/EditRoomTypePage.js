@@ -13,16 +13,12 @@ const AddRoomTypePageTable = () => {
   });
 
   useEffect(() => {
-    if (!state?.room) {
-      toast.error('Room data not found.');
-      navigate('/settings/rooms');
-    } else {
-      setRoomType({
-        name: state.roomType.name,
-        price: state.roomType.price,
-        description: state.roomType.description,
-      });
-    }
+    console.log('state: ', state);
+    setRoomType({
+      name: state.roomType.name,
+      price: state.roomType.price,
+      description: state.roomType.description,
+    });
   }, [state, navigate]);
 
   const changeHandler = (e) => {
@@ -32,7 +28,7 @@ const AddRoomTypePageTable = () => {
 
   const editRoomType = async () => {
     try {
-      await axios.put('/roomTypes', {roomType});
+      await axios.put(`/roomTypes/${state.roomType.room_type_id}`, roomType);
       toast.success('Room Type successfully updated!');
       navigate('/settings/roomTypes');
     } catch (error) {
@@ -59,7 +55,7 @@ const AddRoomTypePageTable = () => {
           onChange={changeHandler}
         />
         <input
-          type="number"
+          type="text"
           placeholder="Description"
           name="description"
           value={roomType.description}
