@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import {FaEdit, FaRegTrashAlt} from 'react-icons/fa';
@@ -10,6 +10,7 @@ import FormItem from './FormItem';
 
 function CreateBookingModal({isModalOpen, setIsModalOpen}) {
   const navigate = useNavigate();
+  const [rooms, setRooms] = useState([]);
   const [booking, setBooking] = useState({
     guest_name: '',
     status: '',
@@ -21,6 +22,27 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
       {start_date: '', end_date: '', room_type_id: 1, room_number: ''},
     ],
   });
+
+  useEffect(() => {
+    const getRooms = async () => {
+      const fetchedRooms = await fetchRooms();
+      setRooms(fetchedRooms);
+    };
+
+    getRooms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchRooms = async () => {
+    try {
+      const res = await axios.get('/rooms');
+      return res.data;
+    } catch (error) {
+      toast.error('Error fetching room types:', error);
+      console.log('Error fetching room types:', error);
+      return [];
+    }
+  };
 
   const handleRBChange = (e, index) => {
     const updatedRoomBookings = booking.room_bookings.map((roomBooking, i) => {
@@ -98,12 +120,10 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
               />
             </FormItem>
             <FormItem>
-              <label>Booking Date:</label>
-              <input
-                type="text"
-                readOnly
-                value={new Date(booking.booking_date).toLocaleDateString()}
-              />
+              <label>Date Booked:</label>
+              <div className="date-booked">
+                {new Date(booking.booking_date).toLocaleDateString()}
+              </div>
             </FormItem>
           </Row>
           <Row>
@@ -181,16 +201,11 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                     value={room_booking.room_number}
                     onChange={(e) => handleRBChange(e, index)}
                   >
-                    <option value={101}>101</option>
-                    <option value={102}>102</option>
-                    <option value={103}>103</option>
-                    <option value={104}>104</option>
-                    <option value={105}>105</option>
-                    <option value={201}>201</option>
-                    <option value={202}>202</option>
-                    <option value={203}>203</option>
-                    <option value={204}>204</option>
-                    <option value={205}>205</option>
+                    {rooms.map((room) => (
+                      <option value={room.room_number}>
+                        {room.room_number}
+                      </option>
+                    ))}
                   </select>
                 </FormItem>
               </Row>

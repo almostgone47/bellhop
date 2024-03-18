@@ -7,9 +7,10 @@ import {useNavigate} from 'react-router-dom';
 import Modal from './Modal';
 import Row from './Row';
 import FormItem from './FormItem';
-import {useBooking} from '../hooks/BookingModalHook';
+import {useBooking} from '../hooks/useBookingModal';
 
 function EditBookingModal({onDelete}) {
+  const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
   const {bookingId, isModalOpen, setIsModalOpen} = useBooking();
   const [booking, setBooking] = useState({
@@ -28,8 +29,25 @@ function EditBookingModal({onDelete}) {
     if (isModalOpen && bookingId) {
       getBooking();
     }
+    const getRooms = async () => {
+      const fetchedRooms = await fetchRooms();
+      setRooms(fetchedRooms);
+    };
+
+    getRooms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalOpen, bookingId]);
+
+  const fetchRooms = async () => {
+    try {
+      const res = await axios.get('/rooms');
+      return res.data;
+    } catch (error) {
+      toast.error('Error fetching room types:', error);
+      console.log('Error fetching room types:', error);
+      return [];
+    }
+  };
 
   const getBooking = async () => {
     try {
@@ -105,12 +123,10 @@ function EditBookingModal({onDelete}) {
               />
             </FormItem>
             <FormItem>
-              <label>Booking Date:</label>
-              <input
-                type="text"
-                readOnly
-                value={new Date(booking.booking_date).toLocaleDateString()}
-              />
+              <label>Date Booked:</label>
+              <div className="date-booked">
+                {new Date(booking.booking_date).toLocaleDateString()}
+              </div>
             </FormItem>
           </Row>
           <Row>
@@ -188,16 +204,11 @@ function EditBookingModal({onDelete}) {
                     value={room_booking.room_number}
                     onChange={(e) => handleRBChange(e, index)}
                   >
-                    <option value={101}>101</option>
-                    <option value={102}>102</option>
-                    <option value={103}>103</option>
-                    <option value={104}>104</option>
-                    <option value={105}>105</option>
-                    <option value={201}>201</option>
-                    <option value={202}>202</option>
-                    <option value={203}>203</option>
-                    <option value={204}>204</option>
-                    <option value={205}>205</option>
+                    {rooms.map((room) => (
+                      <option value={room.room_number}>
+                        {room.room_number}
+                      </option>
+                    ))}
                   </select>
                 </FormItem>
               </Row>

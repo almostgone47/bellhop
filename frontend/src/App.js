@@ -5,8 +5,6 @@ import {Toaster} from 'react-hot-toast';
 import './App.css';
 import Navbar from './components/Navbar';
 import BookingsPage from './pages/BookingsPage';
-import AddBookingPage from './pages/AddBookingPage';
-import EditBookingPage from './pages/EditBookingPage';
 
 import RoomsPage from './pages/RoomsPage';
 import AddRoomPage from './pages/AddRoomPage';
@@ -33,15 +31,21 @@ function App() {
 
         <main>
           <Routes>
+            {/* {bookings routes} */}
             <Route path="/" element={<BookingsPage />} />
-            <Route path="/createBooking" element={<AddBookingPage />} />
-            <Route path="/updateBooking" element={<EditBookingPage />} />
 
-            <Route path="/customers" element={<CustomersPage />} />
-            <Route path="/updateCustomer" element={<EditCustomerPage />} />
-            <Route path="/createCustomer" element={<AddCustomerPage />} />
-
+            {/* {setttings routes} */}
             <Route path="/settings" element={<SettingsLayout />}>
+              <Route path="/settings/customers" element={<CustomersPage />} />
+              <Route
+                path="/settings/updateCustomer"
+                element={<EditCustomerPage />}
+              />
+              <Route
+                path="/settings/createCustomer"
+                element={<AddCustomerPage />}
+              />
+
               <Route path="/settings/rooms" element={<RoomsPage />} />
               <Route path="/settings/updateRoom" element={<EditRoomPage />} />
               <Route path="/settings/createRoom" element={<AddRoomPage />} />

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import EditBookingModal from './EditBookingModal';
-import {useBooking} from '../hooks/BookingModalHook';
+import {useBooking} from '../hooks/useBookingModal';
 
 function Bookings({bookings, onDelete}) {
   const {setBookingId, setIsModalOpen} = useBooking();
@@ -37,7 +36,6 @@ function Bookings({bookings, onDelete}) {
       </thead>
       <tbody>
         <>
-          <EditBookingModal onDelete={onDelete} />
           {bookings.map((booking, i) => (
             <tr
               key={booking.booking_id}
@@ -53,7 +51,7 @@ function Bookings({bookings, onDelete}) {
                 })}
               </td>
               <td style={{width: '165px'}}>
-                <span className={getBadge(booking.status)}>
+                <span className={getBadge(booking.status) + ' badge'}>
                   {booking.status}
                 </span>
               </td>

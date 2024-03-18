@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 import _ from 'lodash';
 
-import {useBooking} from '../hooks/BookingModalHook';
+import {useBooking} from '../hooks/useBookingModal';
 
 const SearchBookingsInput = () => {
   const [searchBookings, setSearchBookings] = useState('');

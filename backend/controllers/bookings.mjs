@@ -14,7 +14,7 @@ import {
   createRoomBooking,
   updateRoomBooking,
 } from '../models/roomBooking.mjs';
-import {getRoomTypePrice} from '../models/roomType.mjs';
+import {getRoomTypePrice, getRoomTypeById} from '../models/roomType.mjs';
 import {
   getCustomerByEmail,
   createCustomer,
@@ -22,6 +22,10 @@ import {
 } from '../models/customer.mjs';
 
 const router = express.Router();
+
+const formatDate = (date) => {
+  return date.toISOString().split('T')[0];
+};
 
 const findOrCreateCustomer = async (bookingData) => {
   let [first_name, last_name] = bookingData.guest_name.split(' ');
@@ -88,7 +92,30 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const bookings = await getBookings();
+    let bookings = await getBookings();
+
+    bookings = await Promise.all(
+      bookings.map(async (booking) => {
+        const roomBookings = await getRoomBookingByBookingId(
+          booking.booking_id,
+        );
+
+        const formattedRoomBookings = await Promise.all(
+          roomBookings.map(async (rb) => {
+            const roomType = await getRoomTypeById(rb.room_type_id);
+            return {
+              ...rb,
+              room_type: roomType,
+              start_date: formatDate(new Date(rb.start_date)),
+              end_date: formatDate(new Date(rb.end_date)),
+            };
+          }),
+        );
+
+        return {...booking, room_bookings: formattedRoomBookings};
+      }),
+    );
+
     res.json(bookings);
   } catch (error) {
     console.error('Error fetching bookings:', error);

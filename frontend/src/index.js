@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import {BookingModalProvider} from './hooks/BookingModalHook';
+import {BookingModalProvider} from './hooks/useBookingModal';
+import {BookingsProvider} from './hooks/useBookings';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BookingModalProvider>
-      <App />
-    </BookingModalProvider>
+    <BookingsProvider>
+      <BookingModalProvider>
+        <App />
+      </BookingModalProvider>
+    </BookingsProvider>
   </React.StrictMode>,
 );
 

@@ -3,13 +3,17 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 
 import Bookings from '../components/Bookings';
+import Calendar from '../components/Calendar';
+import ViewToggle from '../components/ViewToggle';
 import CreateBookingModal from '../components/CreateBookingModal';
+import EditBookingModal from '../components/EditBookingModal';
 import Row from '../components/Row';
 import {FaPlusCircle} from 'react-icons/fa';
 
 function BookingsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState([]);
+  const [selectedView, setSelectedView] = useState('list');
 
   useEffect(() => {
     loadBookings();
@@ -42,24 +46,39 @@ function BookingsPage() {
   };
 
   return (
-    <section className="content-area">
-      <CreateBookingModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
-      <Row>
-        <h2>Bookings</h2>
-        <button id="addBookingBtn" onClick={toggleModal}>
-          <FaPlusCircle />
-          Add Booking
-        </button>
-      </Row>
-      {bookings.length > 0 ? (
-        <Bookings bookings={bookings} onDelete={onDeleteBooking} />
-      ) : (
-        <p>No bookings available.</p>
-      )}
-    </section>
+    <>
+      <div className="view-toggle-container">
+        <ViewToggle
+          selectedView={selectedView}
+          setSelectedView={setSelectedView}
+        />
+      </div>
+      <section className="calendar-area">
+        <CreateBookingModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
+        <EditBookingModal onDelete={onDeleteBooking} />
+        <Row>
+          <h2>Bookings</h2>
+          <button id="addBookingBtn" onClick={toggleModal}>
+            <FaPlusCircle />
+            Add Booking
+          </button>
+        </Row>
+        {bookings.length > 0 ? (
+          <>
+            {selectedView === 'list' ? (
+              <Bookings bookings={bookings} onDelete={onDeleteBooking} />
+            ) : (
+              <Calendar bookings={bookings} onNewBooking={toggleModal} />
+            )}
+          </>
+        ) : (
+          <p>No bookings available.</p>
+        )}
+      </section>
+    </>
   );
 }
 

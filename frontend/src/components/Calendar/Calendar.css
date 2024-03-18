@@ -1,0 +1,124 @@
+.calendar-area {
+  background-color: var(--light-grey);
+  padding: 4px 1%;
+  margin: 0 1%;
+  border-radius: 5px;
+  min-height: 72vh;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.days-container {
+  display: flex;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.beds-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.bed {
+  width: 51px;
+  height: 20px;
+  margin: 2px;
+}
+
+.booked {
+  background-color: purple;
+}
+
+.available {
+  background-color: white;
+  border: 1px solid var(--medium-grey);
+}
+
+.room {
+  position: relative;
+  display: flex;
+}
+
+.days {
+  display: flex;
+}
+
+.day {
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--medium-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  background: #fff;
+  color: #fff;
+}
+
+.booking {
+  position: absolute;
+  top: 0;
+  height: 50px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  border: 1px solid var(--dark-grey);
+}
+
+.booking:hover {
+  cursor: pointer;
+}
+
+.days-of-week {
+  display: flex;
+  width: calc(100% + 80px);
+  color: var(--dark-grey);
+}
+
+.day-of-week {
+  width: 52px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-of-month {
+  font-weight: bold;
+}
+
+.room-number {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--dark-grey);
+  margin: 15px;
+}
+
+.room-number-header {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--dark-grey);
+  margin: 15px;
+  font-weight: bold;
+}

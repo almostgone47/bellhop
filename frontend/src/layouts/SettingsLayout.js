@@ -8,6 +8,7 @@ const SettingsLayout = ({children}) => {
       <aside className="settingsSidebar">
         <NavLink to="/settings/roomTypes">Manage Room Types</NavLink>
         <NavLink to="/settings/rooms">Manage Rooms</NavLink>
+        <NavLink to="/settings/customers">Customers</NavLink>
       </aside>
       <main className="settingsContent">
         <Outlet />

@@ -3,9 +3,10 @@ import db from '../db.mjs';
 
 const getAllRooms = async () => {
   const [rows] = await db.query(
-    `SELECT rooms.*, room_types.name as type_name, room_types.price
+    `SELECT rooms.*, room_types.name, room_types.price
      FROM rooms
-     JOIN room_types ON rooms.room_type_id = room_types.room_type_id`,
+     JOIN room_types ON rooms.room_type_id = room_types.room_type_id;
+    `,
   );
   return rows;
 };
