@@ -3,7 +3,7 @@ import db from '../db.mjs';
 
 const getRoomBookingByBookingId = async (booking_id) => {
   const [rows] = await db.query(
-    `SELECT room_booking_id, room_type_id, start_date, end_date  
+    `SELECT room_booking_id, room_type_id, room_id, start_date, end_date  
      FROM room_bookings 
 	   WHERE booking_id = ?`,
     [booking_id],
@@ -31,13 +31,13 @@ const createRoomBooking = async (roomBooking) => {
 };
 
 const updateRoomBooking = async (roomBookingId, updates) => {
-  const {room_type_id, start_date, end_date, booked_price} = updates;
+  const {room_type_id, start_date, end_date, booked_price, room_id} = updates;
   const startDate = start_date.slice(0, 10);
   const endDate = end_date.slice(0, 10);
   const [rows] = await db.query(
     `UPDATE room_bookings 
-     SET room_type_id = ?, start_date = ?, end_date = ?, nights = DATEDIFF(?, ?), booked_price = ? 
-     WHERE room_booking_id = ?`,
+    SET room_type_id = ?, start_date = ?, end_date = ?, nights = DATEDIFF(?, ?), booked_price = ?, room_id = ?
+    WHERE room_booking_id = ?`,
     [
       room_type_id,
       startDate,
@@ -45,9 +45,11 @@ const updateRoomBooking = async (roomBookingId, updates) => {
       endDate,
       startDate,
       booked_price,
+      room_id,
       roomBookingId,
     ],
   );
+  console.log('updatets: ', rows);
   return rows;
 };
 

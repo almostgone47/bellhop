@@ -14,7 +14,6 @@ const Calendar = ({bookings, onNewBooking}) => {
       const fetchedRooms = await fetchRooms();
       setRooms(fetchedRooms);
     };
-
     getRooms();
   }, []);
 
@@ -120,11 +119,13 @@ const Calendar = ({bookings, onNewBooking}) => {
                 onClick={() => openModal(booking.bookingId)}
                 className={'booking ' + booking.status}
                 style={{
+                  top: `${46 + (Number(booking.room_id) - 1) * 51}px`,
                   left: `${80 + booking.start * 51}px`,
                   width: `${booking.span * 51}px`,
                 }}
               >
-                {booking.guest_name}
+                {booking.guest_name}{' '}
+                {console.log('booking -> ', booking.room_id)}
               </div>
             ))}
           </div>

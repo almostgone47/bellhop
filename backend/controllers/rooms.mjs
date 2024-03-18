@@ -4,7 +4,6 @@ import * as room from '../models/room.mjs';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  console.log('rooms,');
   try {
     const rooms = await room.getAllRooms();
     res.json(rooms);

@@ -13,7 +13,7 @@ import {FaPlusCircle} from 'react-icons/fa';
 function BookingsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState([]);
-  const [selectedView, setSelectedView] = useState('list');
+  const [selectedView, setSelectedView] = useState('calendar');
 
   useEffect(() => {
     loadBookings();
@@ -22,6 +22,7 @@ function BookingsPage() {
   const loadBookings = async () => {
     try {
       const res = await axios.get('/bookings');
+      console.log('res.data: ', res.data);
       setBookings(res.data);
     } catch ({error}) {
       console.log('Failed to load bookings:', error);
@@ -61,10 +62,10 @@ function BookingsPage() {
         <EditBookingModal onDelete={onDeleteBooking} />
         <Row>
           <h2>Bookings</h2>
-          <button id="addBookingBtn" onClick={toggleModal}>
-            <FaPlusCircle />
-            Add Booking
-          </button>
+          <p>
+            Click on the calander to create a booking or click on a booking to
+            edit.
+          </p>
         </Row>
         {bookings.length > 0 ? (
           <>

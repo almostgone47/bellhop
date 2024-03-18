@@ -85,10 +85,10 @@ INSERT INTO bookings (customer_id, date_created)
 VALUES
 	(1, '2024-02-07'); -- <- John Smith (customer id = 1)
 -- Wait for returned bookings.booking_id, then complete all room_booking...
-INSERT INTO room_bookings (room_type_id, booking_id, start_date, end_date, nights, booked_price) 
+INSERT INTO room_bookings (room_type_id, booking_id, room_id, start_date, end_date, nights, booked_price) 
 VALUES
 	(
-		1, 1, '2024-03-20', '2024-03-24', 2, (-- <- room type = 1 because John is a cheap schmuck and got a standard room
+		1, 1, 2, '2024-03-20', '2024-03-24', 2, (-- <- room type = 1 because John is a cheap schmuck and got a standard room
 			SELECT price FROM room_types 
 			WHERE room_type_id = 1 -- <- get the booked price from room_type = 1
 		)
@@ -100,10 +100,10 @@ INSERT INTO bookings (customer_id, date_created)
 VALUES
 	(2, '2024-02-07'); -- <- Jane Doe (customer id = 2)
 -- Wait for returned bookings.booking_id, then complete all room_bookings...
-INSERT INTO room_bookings (room_type_id, booking_id, start_date, end_date, nights, booked_price) 
+INSERT INTO room_bookings (room_type_id, booking_id, room_id, start_date, end_date, nights, booked_price) 
 VALUES
 	(
-		2, 2, '2024-03-22', '2024-03-25', 2, (-- <- room type = 2 for Deluxe and 2 for the booking id
+		2, 2, 14, '2024-03-22', '2024-03-25', 2, (-- <- room type = 2 for Deluxe and 2 for the booking id
 			SELECT price FROM room_types -- <- get the booked price from room_type = 2
 			WHERE room_type_id = 2
 		)
@@ -115,10 +115,10 @@ INSERT INTO bookings (customer_id, date_created)
 VALUES
 	(3, '2024-02-07'); -- <- Jane Doe (customer id = 2)
 -- Wait for returned bookings.booking_id, then complete all room_bookings...
-INSERT INTO room_bookings (room_type_id, booking_id, start_date, end_date, nights, booked_price) 
+INSERT INTO room_bookings (room_type_id, booking_id, room_id, start_date, end_date, nights, booked_price) 
 VALUES
 	(
-		1, 3, '2024-03-23', '2024-03-25', 2, (-- <- room type = 2 for Deluxe and 2 for the booking id
+		1, 3, 4,'2024-03-23', '2024-03-25', 2, (-- <- room type = 1 for standard and 2 for the booking id
 			SELECT price FROM room_types -- <- get the booked price from room_type = 2
 			WHERE room_type_id = 1
 		)

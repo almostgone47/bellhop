@@ -197,14 +197,12 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                   <label>Room Number:</label>
                   <select
                     style={{width: '222px'}}
-                    name="room_number"
-                    value={room_booking.room_number}
+                    name="room_id"
+                    value={room_booking.room_id}
                     onChange={(e) => handleRBChange(e, index)}
                   >
                     {rooms.map((room) => (
-                      <option value={room.room_number}>
-                        {room.room_number}
-                      </option>
+                      <option value={room.room_id}>{room.room_number}</option>
                     ))}
                   </select>
                 </FormItem>

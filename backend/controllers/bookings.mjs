@@ -1,4 +1,5 @@
 import express from 'express';
+import moment from 'moment-timezone';
 
 import {
   getBookingById,
@@ -24,7 +25,7 @@ import {
 const router = express.Router();
 
 const formatDate = (date) => {
-  return date.toISOString().split('T')[0];
+  return moment(date).tz('UTC').format('YYYY-MM-DD');
 };
 
 const findOrCreateCustomer = async (bookingData) => {
@@ -60,8 +61,10 @@ const updateOrInsertRoomBookings = async (roomBooking) => {
           start_date: roomBooking.start_date,
           end_date: roomBooking.end_date,
           booked_price: roomBooking.booked_price,
+          room_id: roomBooking.room_id,
         },
       );
+
       return updatedBooking;
     }
   } else {
@@ -193,6 +196,7 @@ router.put('/:id', async (req, res) => {
     for (const room_booking of bookingData.room_bookings) {
       const roomPrice = await getRoomTypePrice(room_booking.room_type_id);
 
+      room_booking.room_id = room_booking.room_numbers;
       const roomBooking = {
         ...bookingData,
         ...room_booking,
