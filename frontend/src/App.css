@@ -401,13 +401,15 @@ figcaption {
   font-size: 12px;
 }
 
-.checkedout {
+.checkedout,
+.booking.checked.out {
   background: var(--medium-grey);
   color: var(--light-grey);
   border-radius: 3px;
   min-width: 105px;
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: bold;
   font-size: 12px;
 }

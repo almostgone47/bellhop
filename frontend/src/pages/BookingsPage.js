@@ -1,6 +1,4 @@
 import {React, useState, useEffect} from 'react';
-import toast from 'react-hot-toast';
-import axios from 'axios';
 
 import Bookings from '../components/Bookings';
 import Calendar from '../components/Calendar';
@@ -19,6 +17,7 @@ function BookingsPage() {
 
   useEffect(() => {
     getBookings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalOpen]);
 
   const onDeleteBooking = async (id) => {
