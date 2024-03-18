@@ -49,7 +49,6 @@ const updateRoomBooking = async (roomBookingId, updates) => {
       roomBookingId,
     ],
   );
-  console.log('updatets: ', rows);
   return rows;
 };
 

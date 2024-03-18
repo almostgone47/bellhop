@@ -196,12 +196,12 @@ router.put('/:id', async (req, res) => {
     for (const room_booking of bookingData.room_bookings) {
       const roomPrice = await getRoomTypePrice(room_booking.room_type_id);
 
-      room_booking.room_id = room_booking.room_numbers;
       const roomBooking = {
         ...bookingData,
         ...room_booking,
         ...customer,
         booked_price: roomPrice,
+        room_id: room_booking.room_id,
       };
 
       await updateOrInsertRoomBookings(roomBooking);

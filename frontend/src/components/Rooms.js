@@ -8,6 +8,7 @@ function Rooms({rooms, onDelete, onEdit}) {
       <thead>
         <tr>
           <th>Room ID</th>
+          <th>Room Type</th>
           <th>Room Number</th>
         </tr>
       </thead>

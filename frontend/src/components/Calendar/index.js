@@ -7,7 +7,7 @@ import './Calendar.css';
 
 const Calendar = ({bookings, onNewBooking}) => {
   const [rooms, setRooms] = useState([]);
-  const {setBookingId, setIsModalOpen} = useBooking();
+  const {setBookingId, setIsModalOpen, isModalOpen} = useBooking();
 
   useEffect(() => {
     const getRooms = async () => {
@@ -15,7 +15,7 @@ const Calendar = ({bookings, onNewBooking}) => {
       setRooms(fetchedRooms);
     };
     getRooms();
-  }, []);
+  }, [isModalOpen]);
 
   const openModal = (bookingId) => {
     setBookingId(bookingId);
@@ -124,8 +124,7 @@ const Calendar = ({bookings, onNewBooking}) => {
                   width: `${booking.span * 51}px`,
                 }}
               >
-                {booking.guest_name}{' '}
-                {console.log('booking -> ', booking.room_id)}
+                {booking.guest_name}
               </div>
             ))}
           </div>

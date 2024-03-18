@@ -75,7 +75,7 @@ function EditBookingModal({onDelete}) {
       }
       return roomBooking;
     });
-    console.log('e.trarget:  ', updatedRoomBookings);
+
     setBooking({
       ...booking,
       room_bookings: updatedRoomBookings,
@@ -204,8 +204,10 @@ function EditBookingModal({onDelete}) {
                     value={room_booking.room_id}
                     onChange={(e) => handleRBChange(e, index)}
                   >
-                    {rooms.map((room) => (
-                      <option value={room.room_id}>{room.room_number}</option>
+                    {rooms.map((room, i) => (
+                      <option key={i} value={room.room_id}>
+                        {room.room_number}
+                      </option>
                     ))}
                   </select>
                 </FormItem>

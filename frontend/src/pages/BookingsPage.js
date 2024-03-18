@@ -7,43 +7,27 @@ import Calendar from '../components/Calendar';
 import ViewToggle from '../components/ViewToggle';
 import CreateBookingModal from '../components/CreateBookingModal';
 import EditBookingModal from '../components/EditBookingModal';
+import {useBookings} from '../hooks/useBookings';
+import {useBooking} from '../hooks/useBookingModal';
 import Row from '../components/Row';
-import {FaPlusCircle} from 'react-icons/fa';
 
 function BookingsPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bookings, setBookings] = useState([]);
+  const {bookings, getBookings, deleteBooking} = useBookings();
+  const {isModalOpen} = useBooking();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedView, setSelectedView] = useState('calendar');
 
   useEffect(() => {
-    loadBookings();
+    getBookings();
   }, [isModalOpen]);
 
-  const loadBookings = async () => {
-    try {
-      const res = await axios.get('/bookings');
-      console.log('res.data: ', res.data);
-      setBookings(res.data);
-    } catch ({error}) {
-      console.log('Failed to load bookings:', error);
-      toast.error('Failed to load bookings: ' + error);
-    }
-  };
-
   const onDeleteBooking = async (id) => {
-    try {
-      axios.delete(`/bookings/${id}`);
-      setBookings(bookings.filter((booking) => booking.booking_id !== id));
-      setIsModalOpen(false);
-      toast.success('Booking Deleted');
-    } catch (error) {
-      console.log('Error deleting booking:', error);
-      toast.error('Error: Could not delete booking');
-    }
+    deleteBooking(id);
+    setIsCreateModalOpen(false);
   };
 
   const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsCreateModalOpen(!isModalOpen);
   };
 
   return (
@@ -56,8 +40,8 @@ function BookingsPage() {
       </div>
       <section className="calendar-area">
         <CreateBookingModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isCreateModalOpen}
+          setIsModalOpen={setIsCreateModalOpen}
         />
         <EditBookingModal onDelete={onDeleteBooking} />
         <Row>

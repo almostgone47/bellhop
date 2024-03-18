@@ -17,11 +17,23 @@ export const BookingsProvider = ({children}) => {
     }
   };
 
+  const deleteBooking = async (id) => {
+    try {
+      axios.delete(`/bookings/${id}`);
+      setBookings(bookings.filter((booking) => booking.booking_id !== id));
+      toast.success('Booking Deleted');
+    } catch (error) {
+      console.log('Error deleting booking:', error);
+      toast.error('Error: Could not delete booking');
+    }
+  };
+
   return (
     <BookingsContext.Provider
       value={{
         bookings,
         getBookings,
+        deleteBooking,
       }}
     >
       {children}

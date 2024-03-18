@@ -14,6 +14,7 @@ const SearchBookingsInput = () => {
     setIsModalOpen(true);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedOnSearch = useCallback(
     _.debounce((query) => {
       onSearch(query);
