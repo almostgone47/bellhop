@@ -26,7 +26,7 @@ const AddCustomerPage = () => {
         address: customer.address,
       });
       toast.success('Customer successfully added!');
-      navigate('/customers');
+      navigate('/settings/customers');
     } catch (error) {
       toast.error('Failed to add customer.');
     }
