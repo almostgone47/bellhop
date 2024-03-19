@@ -47,8 +47,8 @@ function CustomersPage() {
   return (
     <section className="content-area">
       <Row>
-        <h2>Customers</h2>
-        <Link to="/createCustomer">
+        <h2>Customers (For testing purposes only)</h2>
+        <Link to="/settings/createCustomer">
           <button>
             <FaPlusCircle /> Add Customer
           </button>

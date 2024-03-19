@@ -20,11 +20,23 @@ const getRoomBookingById = async (roomBookingId) => {
 };
 
 const createRoomBooking = async (roomBooking) => {
-  const {booking_id, room_type_id, start_date, end_date} = roomBooking;
+  const {booking_id, room_type_id, start_date, end_date, room_id} = roomBooking;
+  const startDate = start_date.slice(0, 10);
+  const endDate = end_date.slice(0, 10);
+  console.log('roomBooking: ', roomBooking);
   const [rows] = await db.query(
-    `INSERT INTO room_bookings (booking_id, room_type_id, start_date, end_date, nights) 
-     VALUES (?, ?, ?, ?, DATEDIFF(?, ?))`,
-    [booking_id, room_type_id, start_date, end_date, end_date, start_date],
+    `INSERT INTO room_bookings (booking_id, room_type_id, room_id, start_date, end_date, nights, booked_price)
+     VALUES (?, ?, ?, ?, ?, DATEDIFF(?, ?), (SELECT price FROM room_types WHERE room_type_id = ?))`,
+    [
+      booking_id,
+      room_type_id,
+      room_id,
+      startDate,
+      endDate,
+      endDate,
+      startDate,
+      room_type_id,
+    ],
   );
   return rows[0];
 };

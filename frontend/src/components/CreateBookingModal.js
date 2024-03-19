@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-import {FaEdit, FaRegTrashAlt} from 'react-icons/fa';
+import {FaEdit, FaRegTrashAlt, FaPlusCircle} from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 import Modal from './Modal';
@@ -17,7 +17,7 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
     email: '',
     address: '',
     total_paid: '',
-    booking_date: '',
+    booking_date: new Date().toISOString().split('T')[0],
     room_bookings: [
       {start_date: '', end_date: '', room_type_id: 1, room_number: ''},
     ],
@@ -73,6 +73,26 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
       ...booking,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const addRoom = () => {
+    setBooking({
+      ...booking,
+      room_bookings: [
+        ...booking.room_bookings,
+        {start_date: '', end_date: '', room_type_id: 1, room_number: ''},
+      ],
+    });
+  };
+
+  const removeRoom = (index) => {
+    if (booking.room_bookings.length > 1) {
+      const updatedRoomBookings = booking.room_bookings.slice(index, 1);
+      setBooking({
+        ...booking,
+        room_bookings: updatedRoomBookings,
+      });
+    }
   };
 
   const onSave = async () => {
@@ -175,11 +195,21 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
               </select>
             </FormItem>
           </Row>
-          <h3>Rooms Booked</h3>
+          <Row>
+            <h3>Rooms Booked</h3>
+            <button onClick={addRoom}>
+              <FaPlusCircle /> Add Room
+            </button>
+          </Row>
           <hr />
           {booking.room_bookings.map((room_booking, index) => (
             <div key={index}>
-              <h4>Room {index + 1}</h4>
+              <Row>
+                <h4>Room {index + 1}</h4>
+                {booking.room_bookings.length > 1 && (
+                  <FaRegTrashAlt onClick={removeRoom} />
+                )}
+              </Row>
               <Row>
                 <FormItem>
                   <label>Room Type:</label>

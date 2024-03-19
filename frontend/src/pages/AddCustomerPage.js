@@ -34,7 +34,7 @@ const AddCustomerPage = () => {
 
   return (
     <section className="content-area">
-      <h2>Add a Customer</h2>
+      <h2>Add a Customer (For testing purposes only)</h2>
       <div>
         <input
           type="text"

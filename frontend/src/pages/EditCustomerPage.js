@@ -49,7 +49,7 @@ const EditCustomerPage = () => {
 
   return (
     <section className="content-area">
-      <h2>Edit Customer</h2>
+      <h2>Edit Customer (For testing purposes only)</h2>
       <div>
         <input
           type="text"
