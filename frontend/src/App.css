@@ -1,6 +1,6 @@
 /*   ----- Variables  -----  */
 :root {
-  --light-grey: #e3e6edcc;
+  --light-grey: #e3e6ed;
   --medium-grey: #8d9ba4;
   --dark-grey: #515e66;
   --medium-green: #007bff;
@@ -129,7 +129,8 @@ label {
 
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 97%;
+  margin: 0 auto;
 }
 
 caption {
@@ -184,7 +185,6 @@ input {
   margin: 2px;
   border-radius: 5px;
   color: var(--medium-green);
-  width: 200px;
 }
 
 #header-logo {
@@ -323,13 +323,31 @@ figcaption {
 .modal {
   background: #fff;
   z-index: 5;
-  position: absolute;
-  top: 35px;
-  right: 25%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
   width: 700px;
   border-radius: 5px;
   border: 1px solid var(--light-grey);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+  overflow: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.header .formItem {
+  width: 129px !important;
+  margin-right: 0px;
+  padding-left: 16px;
+}
+
+.formItem input,
+.formItem select {
+  width: 125px;
 }
 
 .row {
@@ -365,11 +383,16 @@ figcaption {
   flex-direction: column;
 }
 
+.guest-form-item {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
 .arriving {
   background: #46a746;
   color: #fff;
   border-radius: 3px;
-  min-width: 105px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
@@ -381,7 +404,6 @@ figcaption {
   background: #cd5656;
   color: #fff;
   border-radius: 3px;
-  min-width: 105px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
@@ -393,7 +415,6 @@ figcaption {
   background: var(--medium-green);
   color: #fff;
   border-radius: 3px;
-  min-width: 105px;
   display: inline-block;
   text-align: center;
   font-weight: bold;
@@ -406,7 +427,6 @@ figcaption {
   background: var(--medium-grey);
   color: var(--light-grey);
   border-radius: 3px;
-  min-width: 105px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -456,7 +476,7 @@ figcaption {
 }
 
 .date-booked {
-  width: 225px;
+  width: 105px;
   padding: 6px 8px 18px;
   color: var(--medium-green);
 }

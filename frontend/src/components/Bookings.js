@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {useBooking} from '../hooks/useBookingModal';
+import {useBookingModal} from '../hooks/useBookingModal';
 
 function Bookings({bookings, onDelete}) {
-  const {setBookingId, setIsModalOpen} = useBooking();
+  const {setBookingId, setIsModalOpen} = useBookingModal();
 
   const openModal = (bookingId) => {
     setBookingId(bookingId);
@@ -24,7 +24,6 @@ function Bookings({bookings, onDelete}) {
 
   return (
     <table id="bookings">
-      <caption>Click on a booking to view and edit</caption>
       <thead>
         <tr>
           <th>Guest Name</th>

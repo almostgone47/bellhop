@@ -7,21 +7,12 @@ import toast from 'react-hot-toast';
 import Modal from './Modal';
 import Row from './Row';
 import FormItem from './FormItem';
+import {useBookingModal} from '../hooks/useBookingModal';
 
-function CreateBookingModal({isModalOpen, setIsModalOpen}) {
+function CreateBookingModal({isModalOpen}) {
+  const {booking, setBooking, openModal} = useBookingModal();
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
-  const [booking, setBooking] = useState({
-    guest_name: '',
-    status: '',
-    email: '',
-    address: '',
-    total_paid: '',
-    booking_date: new Date().toISOString().split('T')[0],
-    room_bookings: [
-      {start_date: '', end_date: '', room_type_id: 1, room_number: ''},
-    ],
-  });
 
   useEffect(() => {
     const getRooms = async () => {
@@ -99,7 +90,7 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
     try {
       await axios.post(`/bookings`, booking);
       toast.success('Booking saved successfully!');
-      setIsModalOpen(false);
+      openModal();
       navigate('/');
     } catch (error) {
       toast.error(`Failed to update booking: ${error.message}`);
@@ -118,12 +109,12 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
         {start_date: '', end_date: '', room_type_id: 1, room_number: ''},
       ],
     });
-    setIsModalOpen(false);
+    openModal();
     navigate('/');
   };
-
+  console.log('booking: ', booking);
   return (
-    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+    <Modal isOpen={isModalOpen} onClose={() => openModal()}>
       {booking ? (
         <div>
           <h3 className="modalHeader">Booking Details</h3>
@@ -140,19 +131,11 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
               />
             </FormItem>
             <FormItem>
-              <label>Date Booked:</label>
-              <div className="date-booked">
-                {new Date(booking.booking_date).toLocaleDateString()}
-              </div>
-            </FormItem>
-          </Row>
-          <Row>
-            <FormItem>
               <label htmlFor="email">Email:</label>
               <input
                 id="email"
                 type="email"
-                name="email"
+                name="booking.email"
                 value={booking.email}
                 onChange={handleChange}
               />
@@ -186,7 +169,6 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                 value={booking.status}
                 name="status"
                 onChange={handleChange}
-                style={{width: '222px'}}
               >
                 <option value="arriving">Arriving</option>
                 <option value="checkedin unpaid">Checked In Unpaid</option>
@@ -202,19 +184,36 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
             </button>
           </Row>
           <hr />
+          <Row>
+            <FormItem>
+              <label></label>
+            </FormItem>
+            <FormItem>
+              <label>Room Type</label>
+            </FormItem>
+            <FormItem>
+              <label>Room Number</label>
+            </FormItem>
+            <FormItem>
+              <label>Arrival Date</label>
+            </FormItem>
+            <FormItem>
+              <label>Departure Date</label>
+            </FormItem>
+            <FormItem>
+              <label>Price</label>
+            </FormItem>
+          </Row>
           {booking.room_bookings.map((room_booking, index) => (
-            <div key={index}>
-              <Row>
-                <h4>Room {index + 1}</h4>
-                {booking.room_bookings.length > 1 && (
-                  <FaRegTrashAlt onClick={removeRoom} />
-                )}
-              </Row>
+            <div key={room_booking.room_booking_id}>
               <Row>
                 <FormItem>
-                  <label>Room Type:</label>
+                  {booking.room_bookings.length > 1 && (
+                    <FaRegTrashAlt onClick={removeRoom} />
+                  )}
+                </FormItem>
+                <FormItem>
                   <select
-                    style={{width: '222px'}}
                     name="room_type_id"
                     value={room_booking.room_type_id}
                     onChange={(e) => handleRBChange(e, index)}
@@ -224,22 +223,19 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                   </select>
                 </FormItem>
                 <FormItem>
-                  <label>Room Number:</label>
                   <select
-                    style={{width: '222px'}}
                     name="room_id"
                     value={room_booking.room_id}
                     onChange={(e) => handleRBChange(e, index)}
                   >
                     {rooms.map((room) => (
-                      <option value={room.room_id}>{room.room_number}</option>
+                      <option key={room.room_id} value={room.room_id}>
+                        {room.room_number}
+                      </option>
                     ))}
                   </select>
                 </FormItem>
-              </Row>
-              <Row>
                 <FormItem>
-                  <label>Arrival Date:</label>
                   <input
                     type="date"
                     name="start_date"
@@ -252,7 +248,6 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                   />
                 </FormItem>
                 <FormItem>
-                  <label>Departure Date:</label>
                   <input
                     type="date"
                     name="end_date"
@@ -264,6 +259,17 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
                     }
                   />
                 </FormItem>
+                {console.log('ROOMBOOKING: ', room_booking)}
+                <FormItem>
+                  <input
+                    className="date-booked"
+                    name="room_booking.price"
+                    value={new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                    }).format(room_booking.price)}
+                  />
+                </FormItem>
               </Row>
               <hr />
             </div>
@@ -272,7 +278,7 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
             <button
               onClick={() => onCancel()}
               style={{
-                width: '222px',
+                width: '140px',
                 display: 'flex',
                 justifyContent: 'center',
               }}
@@ -283,7 +289,7 @@ function CreateBookingModal({isModalOpen, setIsModalOpen}) {
             <button
               onClick={() => onSave(booking)}
               style={{
-                width: '222px',
+                width: '140px',
                 display: 'flex',
                 justifyContent: 'center',
               }}

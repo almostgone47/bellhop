@@ -1,6 +1,6 @@
 .calendar-area {
   background-color: var(--light-grey);
-  padding: 4px 1%;
+  padding: 1.5% 1% 1% 0;
   margin: 0 1%;
   border-radius: 5px;
   min-height: 72vh;
@@ -85,7 +85,7 @@
 
 .days-of-week {
   display: flex;
-  width: calc(100% + 198px);
+  width: calc(100% + 25px);
   color: var(--dark-grey);
 }
 
@@ -108,7 +108,9 @@
   font-size: 12px;
   font-weight: bold;
   color: var(--dark-grey);
-  margin: 15px;
+  padding: 0 40px;
+  z-index: 5;
+  background: var(--light-grey);
 }
 
 .room-number-header {

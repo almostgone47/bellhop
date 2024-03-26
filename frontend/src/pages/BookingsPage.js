@@ -6,12 +6,11 @@ import ViewToggle from '../components/ViewToggle';
 import CreateBookingModal from '../components/CreateBookingModal';
 import EditBookingModal from '../components/EditBookingModal';
 import {useBookings} from '../hooks/useBookings';
-import {useBooking} from '../hooks/useBookingModal';
-import Row from '../components/Row';
+import {useBookingModal} from '../hooks/useBookingModal';
 
 function BookingsPage() {
   const {bookings, getBookings, deleteBooking} = useBookings();
-  const {isModalOpen} = useBooking();
+  const {isModalOpen, openModal} = useBookingModal();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedView, setSelectedView] = useState('calendar');
 
@@ -25,8 +24,9 @@ function BookingsPage() {
     setIsCreateModalOpen(false);
   };
 
-  const toggleModal = () => {
-    setIsCreateModalOpen(!isModalOpen);
+  const toggleModal = (newBooking, date) => {
+    newBooking.start_date = date;
+    openModal(newBooking);
   };
 
   return (
@@ -43,13 +43,6 @@ function BookingsPage() {
           setIsModalOpen={setIsCreateModalOpen}
         />
         <EditBookingModal onDelete={onDeleteBooking} />
-        <Row>
-          <h2>Bookings</h2>
-          <p>
-            Click on the calander to create a booking or click on a booking to
-            edit.
-          </p>
-        </Row>
         {bookings.length > 0 ? (
           <>
             {selectedView === 'list' ? (

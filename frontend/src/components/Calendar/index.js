@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-import {useBooking} from '../../hooks/useBookingModal';
+import {useBookingModal} from '../../hooks/useBookingModal';
 import './Calendar.css';
 
 const Calendar = ({bookings, onNewBooking}) => {
   const [rooms, setRooms] = useState([]);
-  const {setBookingId, setIsModalOpen, isModalOpen} = useBooking();
+  const {setBookingId, setIsModalOpen, isModalOpen} = useBookingModal();
 
   useEffect(() => {
     const getRooms = async () => {
@@ -96,7 +96,7 @@ const Calendar = ({bookings, onNewBooking}) => {
       <div className="days-of-week">
         <div className="room-number-header">Room</div>
         {days.map((day, i) => (
-          <div key={i} className="day-of-week">
+          <div key={day + i} className="day-of-week">
             <span className="day-of-month">{day.dayOfMonth}</span>
             <span>{day.dayOfWeek}</span>
           </div>
@@ -108,14 +108,16 @@ const Calendar = ({bookings, onNewBooking}) => {
             <div className="days">
               <div className="room-number">{rooms[i].room_number}</div>
               {days.map((day) => (
-                <div key={day.date} className="day" onClick={onNewBooking}>
-                  {day.date}
-                </div>
+                <div
+                  key={day.date}
+                  className={'day'}
+                  onClick={() => onNewBooking(rooms[i], day.date)}
+                ></div>
               ))}
             </div>
             {room.map((booking, index) => (
               <div
-                key={index}
+                key={'booking' + index}
                 onClick={() => openModal(booking.bookingId)}
                 className={'booking ' + booking.status}
                 style={{

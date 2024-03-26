@@ -2,12 +2,12 @@ import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 import _ from 'lodash';
 
-import {useBooking} from '../hooks/useBookingModal';
+import {useBookingModal} from '../hooks/useBookingModal';
 
 const SearchBookingsInput = () => {
   const [searchBookings, setSearchBookings] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const {setBookingId, setIsModalOpen} = useBooking();
+  const {setBookingId, setIsModalOpen} = useBookingModal();
 
   const openModal = (bookingId) => {
     setBookingId(bookingId);

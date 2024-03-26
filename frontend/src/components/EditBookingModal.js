@@ -5,32 +5,35 @@ import toast from 'react-hot-toast';
 import {useNavigate} from 'react-router-dom';
 
 import Modal from './Modal';
+import Header from './Header';
 import Row from './Row';
+import GuestFormItem from './GuestFormItem';
 import FormItem from './FormItem';
-import {useBooking} from '../hooks/useBookingModal';
+import {useBookingModal} from '../hooks/useBookingModal';
 
-function EditBookingModal({onDelete}) {
+// make the booking modal work for create and edit
+// move all booking modal logic to custom hook
+// make bookings so they cannot over lap on the calendar
+// create the availability page
+// make create booking, drag to select
+// make edit, booking drag and drop
+// add date selector
+// make get bookings, get bookings by date range
+// make the set prices page
+// make the cash register
+
+function BookingModal({onDelete}) {
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
-  const {bookingId, isModalOpen, setIsModalOpen} = useBooking();
-  const [booking, setBooking] = useState({
-    guest_name: '',
-    status: '',
-    email: '',
-    address: '',
-    total_paid: '',
-    booking_date: '',
-    room_bookings: [
-      {
-        start_date: '',
-        end_date: '',
-        room_type_id: 1,
-        room_number: '',
-        booked_price: '',
-        nights: 0,
-      },
-    ],
-  });
+  const {
+    booking,
+    setBooking,
+    bookingId,
+    isModalOpen,
+    openModal,
+    closeModal,
+    setIsModalOpen,
+  } = useBookingModal();
 
   useEffect(() => {
     if (isModalOpen && bookingId) {
@@ -116,11 +119,22 @@ function EditBookingModal({onDelete}) {
     }
   };
 
-  const onEditBooking = async (booking) => {
+  const editBooking = async () => {
     try {
       await axios.put(`/bookings/${booking.booking_id}`, booking);
       toast.success('Booking updated successfully!');
       setIsModalOpen(false);
+      navigate('/');
+    } catch (error) {
+      toast.error(`Failed to update booking: ${error.message}`);
+    }
+  };
+
+  const saveBooking = async () => {
+    try {
+      await axios.post(`/bookings`, booking);
+      toast.success('Booking saved successfully!');
+      setIsModalOpen(true);
       navigate('/');
     } catch (error) {
       toast.error(`Failed to update booking: ${error.message}`);
@@ -133,14 +147,14 @@ function EditBookingModal({onDelete}) {
   };
 
   return (
-    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+    <Modal isOpen={isModalOpen} onClose={() => closeModal()}>
       {booking ? (
         <div>
           <h3 className="modalHeader">Booking Details</h3>
           <hr />
           <Row>
-            <FormItem>
-              <label htmlFor="guest_name">Guest Name:</label>
+            <GuestFormItem>
+              <label htmlFor="guest_name">Guest Name</label>
               <input
                 id="guest_name"
                 type="text"
@@ -148,27 +162,18 @@ function EditBookingModal({onDelete}) {
                 value={booking.guest_name}
                 onChange={handleChange}
               />
-            </FormItem>
-            <FormItem>
-              <label>Date Booked:</label>
-              <div className="date-booked">
-                {new Date(booking.booking_date).toLocaleDateString()}
-              </div>
-            </FormItem>
-          </Row>
-          <Row>
-            <FormItem>
-              <label htmlFor="email">Email:</label>
+            </GuestFormItem>
+            <GuestFormItem>
+              <label htmlFor="email">Email</label>
               <input
                 id="email"
-                type="email"
                 name="email"
                 value={booking.email}
-                disabled
+                onChange={handleChange}
               />
-            </FormItem>
-            <FormItem>
-              <label htmlFor="address">Address:</label>
+            </GuestFormItem>
+            <GuestFormItem>
+              <label htmlFor="address">Address</label>
               <input
                 id="address"
                 type="text"
@@ -176,11 +181,11 @@ function EditBookingModal({onDelete}) {
                 value={booking.address}
                 onChange={handleChange}
               />
-            </FormItem>
+            </GuestFormItem>
           </Row>
           <Row>
-            <FormItem>
-              <label htmlFor="total_paid">Total Paid:</label>
+            <GuestFormItem>
+              <label htmlFor="total_paid">Total Paid</label>
               <input
                 id="total_paid"
                 type="text"
@@ -188,22 +193,21 @@ function EditBookingModal({onDelete}) {
                 value={booking.total_paid}
                 onChange={handleChange}
               />
-            </FormItem>
-            <FormItem>
-              <label htmlFor="status">Status:</label>
+            </GuestFormItem>
+            <GuestFormItem>
+              <label htmlFor="status">Status</label>
               <select
                 id="status"
                 value={booking.status}
                 name="status"
                 onChange={handleChange}
-                style={{width: '222px'}}
               >
                 <option value="arriving">Arriving</option>
                 <option value="checkedin unpaid">Checked In Unpaid</option>
                 <option value="checkedin paid">Checked In Paid</option>
                 <option value="checked out">Checked Out</option>
               </select>
-            </FormItem>
+            </GuestFormItem>
           </Row>
           <Row>
             <h3>Rooms Booked</h3>
@@ -212,19 +216,31 @@ function EditBookingModal({onDelete}) {
             </button>
           </Row>
           <hr />
+          <Header>
+            <FormItem>
+              <label>Room Type</label>
+            </FormItem>
+            <FormItem>
+              <label>Room Number</label>
+            </FormItem>
+            <FormItem>
+              <label>Arrival Date</label>
+            </FormItem>
+            <FormItem>
+              <label>Departure Date</label>
+            </FormItem>
+            <FormItem>
+              <label>Price</label>
+            </FormItem>
+          </Header>
           {booking.room_bookings.map((room_booking, index) => (
             <div key={index}>
               <Row>
-                <h4>Room {index + 1}</h4>
                 {booking.room_bookings.length > 1 && (
                   <FaRegTrashAlt onClick={removeRoom} />
                 )}
-              </Row>
-              <Row>
                 <FormItem>
-                  <label>Room Type:</label>
                   <select
-                    style={{width: '222px'}}
                     name="room_type_id"
                     value={room_booking.room_type_id}
                     onChange={(e) => handleRBChange(e, index)}
@@ -234,9 +250,7 @@ function EditBookingModal({onDelete}) {
                   </select>
                 </FormItem>
                 <FormItem>
-                  <label>Room Number:</label>
                   <select
-                    style={{width: '222px'}}
                     name="room_id"
                     value={room_booking.room_id}
                     onChange={(e) => handleRBChange(e, index)}
@@ -248,10 +262,7 @@ function EditBookingModal({onDelete}) {
                     ))}
                   </select>
                 </FormItem>
-              </Row>
-              <Row>
                 <FormItem>
-                  <label>Arrival Date:</label>
                   <input
                     type="date"
                     name="start_date"
@@ -264,7 +275,6 @@ function EditBookingModal({onDelete}) {
                   />
                 </FormItem>
                 <FormItem>
-                  <label>Departure Date:</label>
                   <input
                     type="date"
                     name="end_date"
@@ -276,14 +286,7 @@ function EditBookingModal({onDelete}) {
                     }
                   />
                 </FormItem>
-              </Row>
-              <Row>
                 <FormItem>
-                  <label>Nights Booked:</label>
-                  <div className="date-booked">{room_booking.nights}</div>
-                </FormItem>
-                <FormItem>
-                  <label>Booked Price:</label>
                   <div className="date-booked">
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
@@ -292,14 +295,13 @@ function EditBookingModal({onDelete}) {
                   </div>
                 </FormItem>
               </Row>
-              <hr />
             </div>
           ))}
           <Row>
             <button
               onClick={() => deleteBooking()}
               style={{
-                width: '222px',
+                width: '140px',
                 display: 'flex',
                 justifyContent: 'center',
               }}
@@ -308,9 +310,9 @@ function EditBookingModal({onDelete}) {
               Cancel Booking
             </button>
             <button
-              onClick={() => onEditBooking(booking)}
+              onClick={editBooking}
               style={{
-                width: '222px',
+                width: '140px',
                 display: 'flex',
                 justifyContent: 'center',
               }}
@@ -327,4 +329,4 @@ function EditBookingModal({onDelete}) {
   );
 }
 
-export default EditBookingModal;
+export default BookingModal;
