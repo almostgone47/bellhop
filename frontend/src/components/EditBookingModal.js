@@ -10,9 +10,8 @@ import Row from './Row';
 import GuestFormItem from './GuestFormItem';
 import FormItem from './FormItem';
 import {useBookingModal} from '../hooks/useBookingModal';
+import {useBookings} from '../hooks/useBookings';
 
-// make the booking modal work for create and edit
-// move all booking modal logic to custom hook
 // make bookings so they cannot over lap on the calendar
 // create the availability page
 // make create booking, drag to select
@@ -23,6 +22,7 @@ import {useBookingModal} from '../hooks/useBookingModal';
 // make the cash register
 
 function BookingModal({onDelete}) {
+  const {isOverlapBooking} = useBookings();
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
   const {
@@ -30,7 +30,6 @@ function BookingModal({onDelete}) {
     setBooking,
     bookingId,
     isModalOpen,
-    openModal,
     closeModal,
     setIsModalOpen,
   } = useBookingModal();
@@ -119,25 +118,16 @@ function BookingModal({onDelete}) {
     }
   };
 
-  const editBooking = async () => {
-    try {
-      await axios.put(`/bookings/${booking.booking_id}`, booking);
-      toast.success('Booking updated successfully!');
-      setIsModalOpen(false);
-      navigate('/');
-    } catch (error) {
-      toast.error(`Failed to update booking: ${error.message}`);
-    }
-  };
-
-  const saveBooking = async () => {
-    try {
-      await axios.post(`/bookings`, booking);
-      toast.success('Booking saved successfully!');
-      setIsModalOpen(true);
-      navigate('/');
-    } catch (error) {
-      toast.error(`Failed to update booking: ${error.message}`);
+  const editBooking = async (booking) => {
+    if (!isOverlapBooking(booking)) {
+      try {
+        await axios.put(`/bookings/${booking.booking_id}`, booking);
+        toast.success('Booking updated successfully!');
+        setIsModalOpen(false);
+        navigate('/');
+      } catch (error) {
+        toast.error(`Failed to update booking: ${error.message}`);
+      }
     }
   };
 
@@ -256,7 +246,7 @@ function BookingModal({onDelete}) {
                     onChange={(e) => handleRBChange(e, index)}
                   >
                     {rooms.map((room, i) => (
-                      <option key={i} value={room.room_id}>
+                      <option key={i} value={Number(room.room_id)}>
                         {room.room_number}
                       </option>
                     ))}
@@ -310,7 +300,7 @@ function BookingModal({onDelete}) {
               Cancel Booking
             </button>
             <button
-              onClick={editBooking}
+              onClick={() => editBooking(booking)}
               style={{
                 width: '140px',
                 display: 'flex',

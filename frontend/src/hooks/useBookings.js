@@ -28,12 +28,29 @@ export const BookingsProvider = ({children}) => {
     }
   };
 
+  const isOverlapBooking = (newBooking) => {
+    return bookings.some((existingBooking) => {
+      return existingBooking.room_bookings.some((existingRoomBooking) => {
+        return newBooking.room_bookings.some((newRoomBooking) => {
+          return (
+            Number(newRoomBooking.room_id) === existingRoomBooking.room_id &&
+            ((newRoomBooking.start_date >= existingRoomBooking.start_date &&
+              newRoomBooking.start_date <= existingRoomBooking.end_date) ||
+              (newRoomBooking.end_date >= existingRoomBooking.start_date &&
+                newRoomBooking.end_date <= existingRoomBooking.end_date))
+          );
+        });
+      });
+    });
+  };
+
   return (
     <BookingsContext.Provider
       value={{
         bookings,
         getBookings,
         deleteBooking,
+        isOverlapBooking,
       }}
     >
       {children}
