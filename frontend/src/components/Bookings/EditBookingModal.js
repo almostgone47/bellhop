@@ -13,8 +13,9 @@ import {useBookingModal} from '../../hooks/useBookingModal';
 import {useBookings} from '../../hooks/useBookings';
 
 // X make bookings so they cannot over lap on the calendar
-// create the availability page
-// add date selector
+// X create the availability page
+// X add date selector
+// wire up availability page
 // make get bookings, get bookings by date range
 // make create booking, drag to select
 // make edit, booking drag and drop

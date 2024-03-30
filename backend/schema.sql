@@ -23,6 +23,15 @@ CREATE TABLE room_types (
 	price FLOAT
 );
 
+CREATE TABLE rates (
+    seasonal_rate_id INT AUTO_INCREMENT PRIMARY KEY,
+    room_type_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    price FLOAT NOT NULL,
+    FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id) ON DELETE CASCADE
+);
+
 CREATE TABLE rooms (
     room_id INT AUTO_INCREMENT PRIMARY KEY,
     room_type_id INT NOT NULL,
@@ -51,7 +60,7 @@ CREATE TABLE room_bookings (
     FOREIGN KEY (room_id) REFERENCES rooms(room_id),
 	FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id),
 	FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
-);  
+);
 
 INSERT INTO customers (first_name, last_name, email, address) 
 VALUES 

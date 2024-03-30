@@ -1,8 +1,13 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
+import './Availability.css';
+
 const Availability = () => {
-  const [availableRooms, setAvailableRooms] = useState([]);
+  const [roomTypes, setRoomTypes] = useState([
+    Array.from({length: 30}, () => []),
+    Array.from({length: 30}, () => []),
+  ]);
 
   const generateDays = () => {
     const days = [];
@@ -32,13 +37,20 @@ const Availability = () => {
       </div>
 
       <div>
-        {availableRooms.length > 0 ? (
-          availableRooms.map((room, index) => (
-            <div key={index}>
-              <h3>{room.type_name}</h3>
-              <p>Room Number: {room.room_number}</p>
-              <p>Price per Night: ${room.price.toFixed(2)}</p>
-            </div>
+        {roomTypes.length > 0 ? (
+          roomTypes.map((roomType, index) => (
+            <>
+              <div key={index} className="room-type">
+                {roomType.map((day, index) => (
+                  <div key={index} className="room-type-day">
+                    <p style={{paddingBottom: '5px'}}>12</p>
+                    <p>$55</p>
+                  </div>
+                ))}
+                ,
+              </div>
+              <br />,
+            </>
           ))
         ) : (
           <p>No rooms available for the selected dates.</p>
