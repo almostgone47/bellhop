@@ -4,20 +4,20 @@ import {FaEdit, FaRegTrashAlt, FaPlusCircle} from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import {useNavigate} from 'react-router-dom';
 
-import Modal from './Modal';
-import Header from './Header';
-import Row from './Row';
-import GuestFormItem from './GuestFormItem';
-import FormItem from './FormItem';
-import {useBookingModal} from '../hooks/useBookingModal';
-import {useBookings} from '../hooks/useBookings';
+import Modal from '../Modal';
+import Header from '../Header';
+import Row from '../Row';
+import GuestFormItem from '../GuestFormItem';
+import FormItem from '../FormItem';
+import {useBookingModal} from '../../hooks/useBookingModal';
+import {useBookings} from '../../hooks/useBookings';
 
-// make bookings so they cannot over lap on the calendar
+// X make bookings so they cannot over lap on the calendar
 // create the availability page
-// make create booking, drag to select
-// make edit, booking drag and drop
 // add date selector
 // make get bookings, get bookings by date range
+// make create booking, drag to select
+// make edit, booking drag and drop
 // make the set prices page
 // make the cash register
 

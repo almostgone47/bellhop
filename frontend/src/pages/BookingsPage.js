@@ -2,9 +2,10 @@ import {React, useState, useEffect} from 'react';
 
 import Bookings from '../components/Bookings';
 import Calendar from '../components/Calendar';
+import Availability from '../components/Availability';
 import ViewToggle from '../components/ViewToggle';
-import CreateBookingModal from '../components/CreateBookingModal';
-import EditBookingModal from '../components/EditBookingModal';
+import CreateBookingModal from '../components/Bookings/CreateBookingModal';
+import EditBookingModal from '../components/Bookings/EditBookingModal';
 import {useBookings} from '../hooks/useBookings';
 import {useBookingModal} from '../hooks/useBookingModal';
 
@@ -45,10 +46,14 @@ function BookingsPage() {
         <EditBookingModal onDelete={onDeleteBooking} />
         {bookings.length > 0 ? (
           <>
-            {selectedView === 'list' ? (
+            {selectedView === 'day view' && (
               <Bookings bookings={bookings} onDelete={onDeleteBooking} />
-            ) : (
+            )}
+            {selectedView === 'calendar' && (
               <Calendar bookings={bookings} onNewBooking={toggleModal} />
+            )}
+            {selectedView === 'availability' && (
+              <Availability bookings={bookings} onNewBooking={toggleModal} />
             )}
           </>
         ) : (

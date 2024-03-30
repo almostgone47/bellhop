@@ -3,6 +3,19 @@ import * as room from '../models/room.mjs';
 
 const router = express.Router();
 
+router.get('/availability', async (req, res) => {
+  console.log('ROOM COUNT: ', await room.getRoomCounts());
+  // now subtact get a count of all room bookings and subtract from totalRoomCount
+  // need to figure out how to track prices from one day to the next
+  try {
+    const {start_date, end_date} = req.query;
+    const availableRooms = await room.showAvailableRooms(start_date, end_date);
+    res.json(availableRooms);
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     const rooms = await room.getAllRooms();
@@ -46,16 +59,6 @@ router.delete('/:id', async (req, res) => {
   try {
     await room.deleteRoom(req.params.id);
     res.json({message: 'Room deleted successfully'});
-  } catch (error) {
-    res.status(500).json({message: error.message});
-  }
-});
-
-router.get('/available', async (req, res) => {
-  try {
-    const {start_date, end_date} = req.query;
-    const availableRooms = await room.showAvailableRooms(start_date, end_date);
-    res.json(availableRooms);
   } catch (error) {
     res.status(500).json({message: error.message});
   }

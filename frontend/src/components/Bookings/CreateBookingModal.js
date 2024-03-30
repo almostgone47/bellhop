@@ -4,10 +4,10 @@ import {useNavigate} from 'react-router-dom';
 import {FaEdit, FaRegTrashAlt, FaPlusCircle} from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
-import Modal from './Modal';
-import Row from './Row';
-import FormItem from './FormItem';
-import {useBookingModal} from '../hooks/useBookingModal';
+import Modal from '../Modal';
+import Row from '../Row';
+import FormItem from '../FormItem';
+import {useBookingModal} from '../../hooks/useBookingModal';
 
 function CreateBookingModal({isModalOpen}) {
   const {booking, setBooking, openModal} = useBookingModal();

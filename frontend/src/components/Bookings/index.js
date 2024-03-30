@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useBookingModal} from '../hooks/useBookingModal';
+import {useBookingModal} from '../../hooks/useBookingModal';
 
 function Bookings({bookings, onDelete}) {
   const {setBookingId, setIsModalOpen} = useBookingModal();

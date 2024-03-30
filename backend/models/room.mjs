@@ -72,6 +72,26 @@ const showAvailableRooms = async (start_date, end_date) => {
   return rows;
 };
 
+const getRoomCounts = async (start_date, end_date) => {
+  const [rows] = await db.query(
+    `
+    SELECT 
+      room_types.room_type_id, 
+      room_types.name, 
+      room_types.description, 
+      room_types.price, 
+      COUNT(rooms.room_id) AS total_rooms
+    FROM rooms
+    JOIN room_types ON rooms.room_type_id = room_types.room_type_id
+    GROUP BY 
+      room_types.room_type_id, room_types.name, room_types.description, room_types.price;
+  
+     `,
+    [end_date, start_date],
+  );
+  return rows;
+};
+
 export {
   createRoom,
   getAllRooms,
@@ -79,4 +99,5 @@ export {
   updateRoom,
   deleteRoom,
   showAvailableRooms,
+  getRoomCounts,
 };
